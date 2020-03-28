@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin="" />
+	<!-- FontAwesome kit code -->
+	<script src="https://kit.fontawesome.com/d302b3e2ff.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="css/mobile.css" />
+	<link rel="stylesheet" href="css/desktop.css" />
+	<script src="scripts/bg_change.js"></script>
+
+	<title>Document</title>
+</head>
+
+<body>
+	<div id="overlay"></div>
+	<div class="container m-0 p-0 mx-auto d-none">
+		<div class="home row align-items-center">
+			<div class="mx-auto text-center">
+				<img src="images/nature-logo.png" width="140">
+				<div class="mt-3">
+					<h1 class="text-white">LOVE NATURE?</h1>
+					<p class="text-white">EXPLORE THE PARKS AND NATURE PLACES IN SINGAPORE</p>
+					<div class="input-group mb-2 mr-sm-2">
+						<input type="text" class="form-control rounded-left border-white " id="query" placeholder="Start searching e.g. Park">
+						<div class="input-group-append">
+							<span class="input-group-text bg-warning lighten-3 rounded-right border-white" id="btn_search"><i class="fas fa-search text-black" aria-hidden="true"></i></span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="results" class="container-fluid m-0 p-0">
+		<nav class="navbar navbar-light bg-main">
+			<a class="navbar-brand">
+				<img src="images/nature-logo.png" height="80">
+            </a>
+            <div class="input-group mb-2 mr-sm-2 col-sm-3">
+                <input type="text" class="form-control rounded-left border-white " id="query-top" placeholder="Start searching e.g. Park">
+                <div class="input-group-append">
+                    <span class="input-group-text bg-warning lighten-3 rounded-right border-white" id="btn-search-top"><i class="fas fa-search text-black" aria-hidden="true"></i></span>
+                </div>
+            </div>
+		</nav>
+
+		<div class="row justify-content-center mr-0">
+			<div id="search-results" class="col-lg-3 bg-white pr-0 overflow-auto ">
+				<div id="search-result-header" class="bg-light m-0 p-0">
+					<p class="p-3"> %no of result% Search Results for
+					%search string%</p>
+				</div>
+                <div id="details" class="p-4">
+
+                    <h5>%Title%</h5>
+                    <div class="card border-0">
+                    <img src="..." class="card-img-top" alt="..." width="390" height="225">                    
+                    <h6>Getting There:</h6>
+                    <p>Alight at Labrador Park MRT station</p>
+
+                    <h6>Nature Reserve opening hours:</h6>
+                    <p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00 pm is not allowed)</p>
+
+                    <h6>Park and Berlayer Creek lighting hours:</h6>
+                    <p>7:00 pm to 7:00 am daily</p>
+
+                    <h6>Accessibility:</h6>
+                    <p>Wheelchair accessible</p>
+
+                    <p>No smoking Smoke-free park</p>
+                    </div>
+                </div>
+			</div>
+			<div id="map-container" class="col-lg-9 pr-0">
+
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div id="filters" class="row justify-content-md-center">
+			<div class="col-lg-2">123</div>
+			<div class="col-md-auto">345</div>
+			<div class="col-lg-2">563</div>
+
+		</div>
+	</div>
+	<!-- setting up the scripting environment for data manipulation -->
+
+	<!--jQuery-->
+	<script src="scripts/jquery-3.4.1.min.js"></script>
+
+	<!--leaflet.js-->
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+		integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+		crossorigin=""></script>
+
+	<!-- axios -->
+	<script src="scripts/axios.min.js"></script>
+
+	<!-- moment.js -->
+	<script src="scripts/moment.js"></script>
+
+	<!-- bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+	</script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+	</script>
+
+	<script src="scripts/app.js"></script>
+	<script src="scripts/map.js"></script>
+
+
+</body>
+
+</html>
