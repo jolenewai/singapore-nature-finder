@@ -9,6 +9,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw' //demo access token
 }).addTo(map);
 
+<<<<<<< HEAD
 let treeIcon = L.icon({
     iconUrl: '../images/tree_icon.png',
     iconSize: [32, 60],
@@ -18,3 +19,5 @@ let treeIcon = L.icon({
     shadowSize: [65, 43],
     shadowAnchor: [22, 72]
 });
+=======
+>>>>>>> b44f880df7920f67657b0f07c1f5c5f8af747fcc
