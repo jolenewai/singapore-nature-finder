@@ -9,3 +9,12 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw' //demo access token
 }).addTo(map);
 
+let treeIcon = L.icon({
+    iconUrl: '../images/tree_icon.png',
+    iconSize: [32, 60],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowUrl: '../images/tree_icon_shadow.png',
+    shadowSize: [65, 43],
+    shadowAnchor: [22, 72]
+});
