@@ -66,6 +66,19 @@ h1, .home p, .home img{
 }    
 
 
+.leaflet-popup-content table th, .leaflet-popup-content table td{
+    padding:3px;
+}
+
+.leaflet-popup-content table th, 
+.leaflet-popup-content table td:first-child
+{
+    display:none;
+}
+
+
+
+
 @media (min-width: 992px) { 
     
     
