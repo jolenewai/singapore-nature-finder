@@ -27,19 +27,7 @@ let sgmap
 $(function () {
 
     function getName() {
-        console.log()
-        $('div.leaflet-popup-content').onLoad(function () {
-            for (let p of ($('div.leaflet-popup-content'))) {
-                console.log(p)
-                if (p.hidden == false) {
-
-                    let allCol = p.find('td')
-                    console.log(allCol)
-
-                    let parkname = allCol[6]
-                }
-            }
-        })
+        
     }
 
 

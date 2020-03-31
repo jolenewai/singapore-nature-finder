@@ -60,11 +60,15 @@ p {
 }
 
 #navbar {
-     z-index: 1030;
+    z-index: 1030;
     position: fixed;
     top:0;
 }
-
+#info-tab {
+    z-index: 1030;
+    position: fixed;
+    left:10;
+}
 .navbar-bg{
     opacity: 20%;
     background-color: #99A139;
@@ -86,14 +90,15 @@ p {
     top:0;
 }
 
-#search-results{
+#info-tab{
     min-height: 400px;
     overflow-y: scroll;
-    border:1px solid red;
+    background-color:#fff;
+    width: 400px;
+    top: 100px;
 }
 #search-result-header{
     width:100%;
-
 }    
 
 

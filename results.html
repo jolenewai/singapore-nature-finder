@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -13,7 +13,7 @@
 	<!-- FontAwesome kit code -->
 	<script src="https://kit.fontawesome.com/d302b3e2ff.js" crossorigin="anonymous"></script>
 
-	
+
 	<link rel="stylesheet" href="css/main.css" />
 
 	<title>Document</title>
@@ -21,69 +21,74 @@
 
 <body>
 
-	<div id="map-container" class="container-fluid m-0 p-0"></div>
+	<div id="map-container" class="container-fluid m-0 p-0">
 
 		<nav id="navbar" class="navbar container-fluid m-0 p-0">
 			<a class="navbar-brand">
 				<img src="images/nature-logo.png" height="80" class="ml-4">
             </a>
-            <div class="input-group mb-2 mr-sm-2 col-sm-3">
-                <input type="text" class="form-control rounded-left border-white " id="query" placeholder="Start searching e.g. Park">
-                <div class="input-group-append">
-                    <span class="input-group-text lightbrown lighten-3 rounded-right border-white" id="btn-search"><i class="fas fa-search text-white" aria-hidden="true"></i></span>
-                </div>
-            </div>
-		</nav>
-
-		<div class="row justify-content-left mr-0">
-			<div id="search-results" class="col-lg-3 bg-white pr-0 overflow-auto">
-				<div id="search-result-header" class="bg-light m-0 p-0">
-					<p class="p-3"> %no of result% Search Results for
-					%search string%</p>
+				<div class="input-group mb-2 mr-sm-2 col-sm-3">
+					<input type="text" class="form-control rounded-left border-white " id="query" placeholder="Start searching e.g. Park">
+					<div class="input-group-append">
+						<span class="input-group-text lightbrown lighten-3 rounded-right border-white" id="btn-search"><i class="fas fa-search text-white" aria-hidden="true"></i></span>
+					</div>
 				</div>
-                <div id="details" class="p-4">
+		</nav>
+		<div class="row justify-content-left align-items-end mr-0 mb-0 bg-red">
+			<div class="col ">
+				<div id="info-tab" class="align-items-end">
+					<ul class="nav nav-tabs " id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="search-results" data-toggle="tab" href="#search" role="tab"
+								aria-controls="search" aria-selected="true">Search Results</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="filters" data-toggle="tab" href="#filter" role="tab"
+								aria-controls="filter" aria-selected="false">Filters</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="weather-info" data-toggle="tab" href="#weather" role="tab"
+								aria-controls="weather" aria-selected="false">Weather</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
+							<div id="search-result-header" class="bg-light m-0 p-0">
+								<p class="p-3"> %no of result% Search Results for
+									%search string%</p>
+							</div>
+							<div id="details" class="p-4">
 
-                    <h5>%Title%</h5>
-                    <div class="card border-0">
-                    <img src="..." class="card-img-top" alt="..." width="390" height="225">                    
-                    <h6>Getting There:</h6>
-                    <p>Alight at Labrador Park MRT station</p>
+								<h5>%Title%</h5>
+								<div class="card border-0">
+									<img src="..." class="card-img-top" alt="..." width="390" height="225">
+									<h6>Getting There:</h6>
+									<p>Alight at Labrador Park MRT station</p>
 
-                    <h6>Nature Reserve opening hours:</h6>
-                    <p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00 pm is not allowed)</p>
+									<h6>Nature Reserve opening hours:</h6>
+									<p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00
+										pm
+										is
+										not allowed)</p>
 
-                    <h6>Park and Berlayer Creek lighting hours:</h6>
-                    <p>7:00 pm to 7:00 am daily</p>
+									<h6>Park and Berlayer Creek lighting hours:</h6>
+									<p>7:00 pm to 7:00 am daily</p>
 
-                    <h6>Accessibility:</h6>
-                    <p>Wheelchair accessible</p>
+									<h6>Accessibility:</h6>
+									<p>Wheelchair accessible</p>
 
-                    <p>No smoking Smoke-free park</p>
-                    </div>
+									<p>No smoking Smoke-free park</p>
+								</div>
 
-                     <h5>%Title%</h5>
-                    <div class="card border-0">
-                    <img src="..." class="card-img-top" alt="..." width="390" height="225">                    
-                    <h6>Getting There:</h6>
-                    <p>Alight at Labrador Park MRT station</p>
-
-                    <h6>Nature Reserve opening hours:</h6>
-                    <p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00 pm is not allowed)</p>
-
-                    <h6>Park and Berlayer Creek lighting hours:</h6>
-                    <p>7:00 pm to 7:00 am daily</p>
-
-                    <h6>Accessibility:</h6>
-                    <p>Wheelchair accessible</p>
-
-                    <p>No smoking Smoke-free park</p>
-                    </div>
-                </div>
-                
+							</div>
+						</div>
+						<div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">Filter Tab</div>
+						<div class="tab-pane fade" id="weather" role="tabpanel" aria-labelledby="weather-tab">Weather Tab</div>
+					</div>
+				</div>
 			</div>
-
 		</div>
-	
+	</div>
 	<!-- setting up the scripting environment for data manipulation -->
 
 	<!--jQuery-->
@@ -107,7 +112,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
 	</script>
-    <script src="/scripts/map.js"></script>
+	<script src="/scripts/map.js"></script>
 	<script src="/scripts/app.js"></script>
 
 
