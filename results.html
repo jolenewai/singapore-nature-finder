@@ -10,6 +10,9 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 		crossorigin="" />
+    <!-- marker clusters-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
 	<!-- FontAwesome kit code -->
 	<script src="https://kit.fontawesome.com/d302b3e2ff.js" crossorigin="anonymous"></script>
 
@@ -23,20 +26,22 @@
 
 	<div id="map-container" class="container-fluid m-0 p-0">
 
-		<nav id="navbar" class="navbar container-fluid m-0 p-0">
-			<a class="navbar-brand">
-				<img src="images/nature-logo.png" height="80" class="ml-4">
+            <div id="logo">
+			<a href="index.html">
+				<img src="images/nature-logo.png" class="logo-margin mt-3 img-fluid">
             </a>
-				<div class="input-group mb-2 mr-sm-2 col-sm-3">
-					<input type="text" class="form-control rounded-left border-white " id="query" placeholder="Start searching e.g. Park">
+            </div>
+            <div class="ml-auto pr-2 col" id="search-bar-wrapper">
+				<div class="input-group mb-2 mt-3 ml-auto col-6 col-lg-4 col-md-4" id="search-bar">
+					<input type="text" class="form-control rounded-left border-white" id="query" placeholder="Start searching e.g. Park">
 					<div class="input-group-append">
 						<span class="input-group-text lightbrown lighten-3 rounded-right border-white" id="btn-search"><i class="fas fa-search text-white" aria-hidden="true"></i></span>
 					</div>
 				</div>
-		</nav>
-		<div class="row justify-content-left align-items-end mr-0 mb-0 bg-red">
-			<div class="col ">
-				<div id="info-tab" class="align-items-end">
+            </div>
+		<div class="row justify-content-left mr-0 mb-0 p-0">
+			<div class="col p-0">
+				<div id="info-tab" class="col col-lg-3 col-sm-4 ">
 					<ul class="nav nav-tabs " id="myTab" role="tablist">
 						<li class="nav-item">
 							<a class="nav-link active" id="search-results" data-toggle="tab" href="#search" role="tab"
@@ -57,7 +62,7 @@
 								<p class="p-3"> %no of result% Search Results for
 									%search string%</p>
 							</div>
-							<div id="details" class="p-4">
+							<div id="details" class="p-2">
 
 								<h5>%Title%</h5>
 								<div class="card border-0">
@@ -98,7 +103,7 @@
 	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
 		integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
 		crossorigin=""></script>
-
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 	<!-- axios -->
 	<script src="scripts/axios.min.js"></script>
 

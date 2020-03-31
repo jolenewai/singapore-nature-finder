@@ -20,16 +20,65 @@ body{
     }
 
 #overlay {
-  position: fixed; /* Sit on top of the page content */
-  width: 100%; /* Full width (cover the whole page) */
-  height: 100%; /* Full height (cover the whole page) */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-  z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
-  cursor: pointer; /* Add a pointer on hover */
+        position: fixed; /* Sit on top of the page content */
+        width: 100%; /* Full width (cover the whole page) */
+        height: 100%; /* Full height (cover the whole page) */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+        z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer; /* Add a pointer on hover */
+}
+
+
+#map-container{
+        /* width: 100%; */
+    height: 100%;
+} 
+
+#results {
+    z-index: 1030;
+    position: fixed;
+    top:0;
+}
+
+#info-tab{
+    min-height: 300px;
+    background-color:#fff;
+    top: 100px;
+}
+
+#myTabContent {
+    overflow-y: scroll;
+    height: 500px;
+}
+
+#search-result-header{
+    width:100%;
+}    
+
+#logo, #search-bar-wrapper {
+    z-index: 700;
+    position: fixed; 
+    top:0;
+}
+
+#search-bar{
+    min-width:220px;
+}
+#logo {
+    left: 15px;
+}
+
+#logo img{
+    max-height:70px;
+}
+#info-tab {
+    z-index: 1030;
+    position: fixed;
+    left:10;
 }
 
 p {
@@ -54,20 +103,8 @@ p {
     background-color: #99A139;
 }
 
-#filters{
-    background-color: #DEE0BE;
-    height: 60px;
-}
-
-#navbar {
-    z-index: 1030;
-    position: fixed;
-    top:0;
-}
-#info-tab {
-    z-index: 1030;
-    position: fixed;
-    left:10;
+.logo-margin{
+    margin-left: 50px;
 }
 .navbar-bg{
     opacity: 20%;
@@ -79,50 +116,22 @@ p {
     width: 100%;
 }
 
-#map-container{
-        /* width: 100%; */
-        height: 100%;
-    } 
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+    background-color: #DEE0BE;
 
-#results {
-    z-index: 1030;
-    position: fixed;
-    top:0;
+}
+.leaflet-popup-content{
+    padding:5px 3px 3px 3px;
+    font-weight: 500;
+    font-size: 14px;
+    color:#002640;
 }
 
-#info-tab{
-    min-height: 400px;
-    overflow-y: scroll;
-    background-color:#fff;
-    width: 400px;
-    top: 100px;
-}
-#search-result-header{
-    width:100%;
-}    
 
-
-.leaflet-popup-content table th, .leaflet-popup-content table td{
-    padding:3px;
-}
-
-.leaflet-popup-content table th, 
-.leaflet-popup-content table td:first-child
-{
-    display:none;
-}
 
 
 .lightbrown {
     background-color:#D4BA83; 
 }
 
-@media (min-width: 992px) { 
-    
-    
-
-    
-
-
-}
 
