@@ -86,7 +86,7 @@ p {
     font-weight:200;
 }
 
-h1, h2, h3, h4, h5, h6{
+.bluetext{
     color: #002640;
 }
 
@@ -138,4 +138,18 @@ h1, h2, h3, h4, h5, h6{
     background-color:#D4BA83; 
 }
 
+.weatherText {
+    font-size: 1.5em;
+}
+.tempNumber {
+    font-size: 6em;
+}
 
+.tempDegree {
+    font-size: 0.5em;
+}
+
+.highlow {
+    font-size: 1.5em;
+
+}

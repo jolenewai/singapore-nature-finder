@@ -57,10 +57,6 @@ let promises = [
 
 
 
-
-
-
-
 $(function () {
 
     function clearMarkers() {
@@ -96,25 +92,49 @@ $(function () {
 
     function getWeather(){
 
-        let date_time = moment().format('YYYY-MM-DDThh:mm:ss')
+        let date_time = moment().format()
         let date = moment().format('YYYY-MM-DD')
         console.log(date_time)    
         console.log(date)
 
-        let weatherPromises = [
-            axios.get(weather2hrAPI, {params:{
-                date_time, date
-            }}),
-            axios.get(weather24hrAPI, {params:{
-                date_time, date
-            }})
-        ]
-        axios.get(weatherPromises).then(axios.spread(function (weather2hr, weather24hr) {
-            console.log(weather2hr.data)
-            //displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, pData)
+        params = {
+            date_time, date
+        }
 
+        axios.get(weather2hrAPI, {params}).then(function(response){
+            weather2hr = response.data
+        })
+
+        axios.get(weather24hrAPI, {params}).then(function(response){
+            weather24hr = response.data
+
+            let forecast = weather24hr.items[0].general.forecast
+            let lowTemp = weather24hr.items[0].general.temperature.low
+            let highTemp = weather24hr.items[0].general.temperature.high
+
+            let aveTemp = Math.floor((lowTemp + highTemp) / 2)
+
+            let weatherText = `
+                <div class="p-5">
+                    <h3 class="bluetext">24-hour <br/>Weather Forecast</h3>
+                    <span class="weatherText">${forecast} </span>
+                    <p>Average Temperature</br>
+                    <span class="tempNumber">
+                    ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
+                    </span><br/>
+                    <span class="highlow">
+                        ${lowTemp}<sup>°</sup> / ${highTemp}<sup>°</sup>
+                    </span>
+                </div>
+            `
+
+             $('#weather').empty()
+            $('#weather').append(weatherText)
+        })
         
-        }))
+        
+
+
     }
 
     function getData() {
