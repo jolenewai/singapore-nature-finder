@@ -20,68 +20,107 @@
 //Parks and NParks data from Data.gov.sg
 let parksAPI = "/data/parks-geojson.geojson"
 let nParksAPI = "/data/nparks-parks-geojson.geojson"
+let cyclingAPI = "/data/cycling-path-network-geojson.geojson"
+let treesAPI = "/data/heritage-trees-geojson.geojson"
+let pcnAPI = "/data/park-connector-loop-geojson.geojson"
+
 let parks
 let nParks
+// create the markers for nature
+let parksLayer = L.markerClusterGroup();
+let marker
+
 $(function () {
 
-    function getName() {
-        console.log($('.leaflet-popup-content table td'))
+    function displayResult() {
+        let promises = [axios.get(parksAPI), axios.get(nParksAPI)];
+        axios.all(promises).then(axios.spread(function (parks, nparks) {
+
+            let query = $('#query').val()
+
+            parksLayer.clearLayers()
+            let noOfResults = 0
+            for (let n of parks.data.features) {
+                let desc = n.properties.Description
+
+                pName = $(desc).children().children().children().children().eq(14).text()
+                // only show results with Park in the decription
+                if (desc.indexOf($('#query').val()) >= 0 || desc.indexOf($('#query-home').val()) >= 0) {
+                    let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup(pName)
+                    
+                    parksLayer.addLayer(marker);
+                    noOfResults = noOfResults + 1;
+
+                    let searchResult = `
+                        <h5>${pName}</h5>
+                        <div class="card border-0">
+                            <img src="..." class="card-img-top" alt="..." width="390" height="225">
+                            <h6>Getting There:</h6>
+                            <p>Alight at Labrador Park MRT station</p>
+
+                            <h6>Nature Reserve opening hours:</h6>
+                            <p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00pm is not allowed)</p>
+
+                            <h6>Park and Berlayer Creek lighting hours:</h6>
+                            <p>7:00 pm to 7:00 am daily</p>
+
+                            <h6>Accessibility:</h6>
+                            <p>Wheelchair accessible</p>
+
+                            <p>No smoking Smoke-free park</p>
+                        </div>
+                        <hr />
+                    `
+                    $('#details').append(searchResult)
+                }
+            }
+
+            parksLayer.addTo(map)
+
+            let searchResultStr = `
+                <p class="p-3"> ${noOfResults} Search Results for ${query}</p>
+            `
+            $('#search-result-header').empty()
+            $('#search-result-header').append(searchResultStr)
+
+
+            // let bound = parksLayer.getBounds(marker)
+            // map.fitBounds(bound)
+            // let nParksLayer = L.geoJson(nparks.data, {
+            //     onEachFeature: (feature, layer) => {
+            //         desc = feature.properties.Description
+            //         pName = $(desc).children().children().children().children().eq(4).text()
+
+            //         layer.bindPopup(pName);
+            //     }
+            // }).addTo(map);
+
+            // nParksLayer.setStyle({
+            //     color: '#99A139',
+            //     fillColor: '#476220',
+            //     weight: 1,
+            //     fillOpacity: 0.75
+            // })
+
+        }));
+
+
+
     }
 
-    let str = `
-    <center><table><tr><th colspan='2' align='center'><em>Attributes</em></th></tr><tr bgcolor="#E3E3F3"> <th>ADDRESSBLOCKHOUSENUMBER</th> <td></td> </tr><tr bgcolor=""> <th>ADDRESSBUILDINGNAME</th> <td></td> </tr><tr bgcolor="#E3E3F3"> <th>ADDRESSTYPE</th> <td></td> </tr><tr bgcolor=""> <th>HYPERLINK</th> <td></td> </tr><tr bgcolor="#E3E3F3"> <th>LANDXADDRESSPOINT</th> <td>25144.2383</td> </tr><tr bgcolor=""> <th>LANDYADDRESSPOINT</th> <td>34327.0469</td> </tr><tr bgcolor="#E3E3F3"> <th>NAME</th> <td>Bougainvillea Park</td> </tr><tr bgcolor=""> <th>PHOTOURL</th> <td></td> </tr><tr bgcolor="#E3E3F3"> <th>ADDRESSPOSTALCODE</th> <td></td> </tr><tr bgcolor=""> <th>DESCRIPTION</th> <td>Junction of Dunearn Road and Watten Drive</td> </tr><tr bgcolor="#E3E3F3"> <th>ADDRESSSTREETNAME</th> <td></td> </tr><tr bgcolor=""> <th>ADDRESSFLOORNUMBER</th> <td></td> </tr><tr bgcolor="#E3E3F3"> <th>INC_CRC</th> <td>CA4851EDE75AEDFE</td> </tr><tr bgcolor=""> <th>FMEL_UPD_D</th> <td>20200218182414</td> </tr><tr bgcolor="#E3E3F3"> <th>ADDRESSUNITNUMBER</th> <td></td> </tr></table></center>
-    `
-    // str = str.trim()
-    // let strHTML = document.createElement('div')
-    // strHTML.innerHTML = str
 
-    console.log($(str).children().children().children().children().eq(16).text())
 
-    let promises = [axios.get(parksAPI), axios.get(nParksAPI), axios.get(sgAPI)];
-    axios.all(promises).then(axios.spread(function (parks, nparks, sgmap) {
-    
-    // create the markers for nature
-    let parksLayer = L.markerClusterGroup();
+    $('#btn-search-home').click(function () {
 
-    for (let n of parks.data.features) {
-        let desc = n.properties.Description
-        
-        pName = $(desc).children().children().children().children().eq(14).text()
-        // only show results with Park in the decription
-        if (desc.indexOf("Park") >= 0 && desc.indexOf("nparks") >= 0) {
-            let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup(pName)
-            parksLayer.addLayer(marker);
-        }
-    }
+        axios.get('/results.html').then(function (response) {
 
-    parksLayer.addTo(map)
+            window.location = '/results.html'
+            displayResult()
 
-    let nParksLayer = L.geoJson(nparks.data, {
-        onEachFeature: (feature, layer) => {
-            desc = feature.properties.Description
-            pName = $(desc).children().children().children().children().eq(4).text()
+        })
 
-            layer.bindPopup(pName);
-        }
-    }).addTo(map);
-
-    nParksLayer.setStyle({
-        color: '#99A139',
-        fillColor: '#476220',
-        weight: 1,
-        fillOpacity: 0.75
     })
-
-    $('.leaflet-marker-icon').click(getName)
-
-
-
-
-
-
-}));
-
-
+    $('#btn-search').click(displayResult)
 
 
 })

@@ -11,11 +11,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(map);
 
 let treeIcon = L.icon({
-    iconUrl: '../images/tree_icon.png',
+    iconUrl: '/images/tree_icon.png',
     iconSize: [16, 30],
     iconAnchor: [8, 30],
     popupAnchor: [-3, -30],
-    shadowUrl: '../images/tree_icon_shadow.png',
+    shadowUrl: '/images/tree_icon_shadow.png',
     shadowSize: [33, 17],
     shadowAnchor: [9, 14]
 })
