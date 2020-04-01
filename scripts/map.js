@@ -19,3 +19,13 @@ let treeIcon = L.icon({
     shadowSize: [33, 17],
     shadowAnchor: [9, 14]
 })
+
+let tree2Icon = L.icon({
+    iconUrl: '/images/tree2_icon.png',
+    iconSize: [16, 30],
+    iconAnchor: [8, 30],
+    popupAnchor: [-3, -30],
+    shadowUrl: '/images/tree_icon_shadow.png',
+    shadowSize: [33, 17],
+    shadowAnchor: [9, 14]
+})

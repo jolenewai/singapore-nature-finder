@@ -16,45 +16,111 @@
 
 // let foursquareData = null
 
-
 //Parks and NParks data from Data.gov.sg
 let parksAPI = "/data/parks-geojson.geojson"
 let nParksAPI = "/data/nparks-parks-geojson.geojson"
 let cyclingAPI = "/data/cycling-path-network-geojson.geojson"
 let treesAPI = "/data/heritage-trees-geojson.geojson"
 let pcnAPI = "/data/park-connector-loop-geojson.geojson"
+let nParksTracksAPI = "/data/nparks-tracks-geojson.geojson"
 
+// declare variables for creating markers
 let parks
 let nParks
-// create the markers for nature
-let parksLayer = L.markerClusterGroup();
+let cyclingPath
+let trees
+let pcn
+let nParksTracks
+let parksLayer
+let nParksLayer
+let cyclingPathLayer
 let marker
+
+ let promises = [
+            axios.get(parksAPI),
+            axios.get(nParksAPI),
+            axios.get(cyclingAPI),
+            axios.get(treesAPI),
+            axios.get(pcnAPI),
+            axios.get(nParksTracksAPI)
+        ];
 
 $(function () {
 
-    function displayResult() {
-        let promises = [axios.get(parksAPI), axios.get(nParksAPI)];
-        axios.all(promises).then(axios.spread(function (parks, nparks) {
-
-            let query = $('#query').val()
-
+    function clearMarkers() {
+        if (parksLayer) {
             parksLayer.clearLayers()
-            let noOfResults = 0
-            for (let n of parks.data.features) {
-                let desc = n.properties.Description
+        }
 
-                pName = $(desc).children().children().children().children().eq(14).text()
-                // only show results with Park in the decription
-                if (desc.indexOf($('#query').val()) >= 0 || desc.indexOf($('#query-home').val()) >= 0) {
-                    let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup(pName)
-                    
-                    parksLayer.addLayer(marker);
-                    noOfResults = noOfResults + 1;
+        if (nParksLayer) {
+            nParksLayer.clearLayers()
+        }
+    }
 
-                    let searchResult = `
+    function getData(promises, displayResult) {
+       
+        // axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
+        //     displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks)
+        // }))
+
+        axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
+            return displayResult
+        }))
+
+    }
+
+    function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks) {
+        
+        alert("hi")
+        clearMarkers()
+        // getData()
+        $('#details').empty()
+        $('#search-result-header').empty()
+
+        let query = $('#query').val()
+        //console.log($('#park-area'))
+
+        if ($('input[name="show-park"]:checked')) {
+            let showMode = $('input[name="show-park"]:checked').val()
+            if (showMode == 'area') {
+                viewParksArea(nparks, query)
+            } else {
+                viewParks(parks, query)
+            }
+        }
+
+        
+
+        // let bound = parksLayer.getBounds(marker)
+        // map.fitBounds(bound)
+
+    }
+
+
+
+    function viewParks(parks, query) {
+
+        parksLayer = L.markerClusterGroup();
+
+        let noOfResults = 0
+        //console.log(parks.data)
+        for (let n of parks.data.features) {
+            let desc = n.properties.Description
+
+            pName = $(desc).children().children().children().children().eq(14).text()
+            // only show results with Park in the decription
+            if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
+                let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup(pName)
+
+                parksLayer.addLayer(marker);
+                noOfResults = noOfResults + 1;
+
+
+                let searchResult = `
+                        <a href="#${noOfResults}"></a>
                         <h5>${pName}</h5>
                         <div class="card border-0">
-                            <img src="..." class="card-img-top" alt="..." width="390" height="225">
+                            <img src="/images/bg_image1.jpg" class="card-img-top" alt="${pName}" width="390" height="225">
                             <h6>Getting There:</h6>
                             <p>Alight at Labrador Park MRT station</p>
 
@@ -71,56 +137,136 @@ $(function () {
                         </div>
                         <hr />
                     `
-                    $('#details').append(searchResult)
-                }
+                $('#details').append(searchResult)
             }
+        }
 
-            parksLayer.addTo(map)
+        parksLayer.addTo(map)
 
-            let searchResultStr = `
-                <p class="p-3"> ${noOfResults} Search Results for ${query}</p>
+        let searchResultStr = `
+                <p class="p-3"> ${noOfResults} Search Results for <strong>${query}</strong></p>
             `
-            $('#search-result-header').empty()
-            $('#search-result-header').append(searchResultStr)
-
-
-            // let bound = parksLayer.getBounds(marker)
-            // map.fitBounds(bound)
-            // let nParksLayer = L.geoJson(nparks.data, {
-            //     onEachFeature: (feature, layer) => {
-            //         desc = feature.properties.Description
-            //         pName = $(desc).children().children().children().children().eq(4).text()
-
-            //         layer.bindPopup(pName);
-            //     }
-            // }).addTo(map);
-
-            // nParksLayer.setStyle({
-            //     color: '#99A139',
-            //     fillColor: '#476220',
-            //     weight: 1,
-            //     fillOpacity: 0.75
-            // })
-
-        }));
-
-
+        $('#search-result-header').append(searchResultStr)
 
     }
 
+    function viewParksArea(nparks, query) {
+        //marking park areas
+        nParksLayer = new L.geoJson(nparks.data, {
+            onEachFeature: (feature, layer) => {
+                desc = feature.properties.Description
+                pName = $(desc).children().children().children().children().eq(4).text()
+                layer.bindPopup(pName);
+            }
+        }).addTo(map);
 
+        nParksLayer.setStyle({
+            color: '#99A139',
+            fillColor: '#476220',
+            weight: 1,
+            fillOpacity: 0.6
+        })
+    }
+
+    function viewCyclingPath(cyclingPath, query) {
+        //marking cycling path
+        cyclingPathLayer = new L.geoJson(cyclingPath.data, {
+            onEachFeature: (feature, layer) => {
+                desc = feature.properties.Description
+                //console.log($(desc).children().children().children().children())
+                pName = $(desc).children().children().children().children().eq(2).text()
+                layer.bindPopup(pName);
+            }
+        }).addTo(map)
+
+        cyclingPathLayer.setStyle({
+            color: '#563B28',
+            // fillColor: 'red',
+            weight: 2,
+            Opacity: 0.3
+        })
+    }
+
+    function viewNParksTracks(nParksTracks, query) {
+        //mark nParksTracks
+        nParksTracksLayer = new L.geoJson(nParksTracks.data, {
+            onEachFeature: (feature, layer) => {
+                desc = feature.properties.Description
+                //console.log($(desc).children().children().children().children())
+                //pName = 'Point A: '+ $(desc).children().children().children().children().eq(2).text()
+                //pName = pName + '<br/>Point B: ' + $(desc).children().children().children().children().eq(4).text()
+                layer.bindPopup(pName);
+            }
+        }).addTo(map)
+
+        nParksTracksLayer.setStyle({
+            color: '#196C00',
+            // fillColor: 'red',
+            weight: 2,
+            Opacity: 0.5
+        })
+
+    }
+
+    function viewTrees(trees, query) {
+
+        // marking trees
+        treesLayer = L.markerClusterGroup();
+
+        for (let t of trees.data.features) {
+            let desc = t.properties.Description
+
+            pName = $(desc).children().children().children().children().eq(10).text()
+
+            if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
+                let marker = L.marker([t.geometry.coordinates[1], t.geometry.coordinates[0]], { icon: tree2Icon }).bindPopup(pName)
+                treesLayer.addLayer(marker);
+            }
+
+        }
+
+        treesLayer.addTo(map)
+    }
+
+    function viewPCN(pcn, query) {
+
+        //mark park connector
+        pcnLayer = new L.geoJson(pcn.data, {
+            onEachFeature: (feature, layer) => {
+                desc = feature.properties.Description
+                pName = 'Point A: ' + $(desc).children().children().children().children().eq(2).text()
+                pName = pName + '<br/>Point B: ' + $(desc).children().children().children().children().eq(4).text()
+                layer.bindPopup(pName);
+            }
+        }).addTo(map)
+
+        pcnLayer.setStyle({
+            color: '#D49683',
+            // fillColor: 'red',
+            weight: 2,
+            Opacity: 0.5
+        })
+
+    }
+
+     
 
     $('#btn-search-home').click(function () {
 
         axios.get('/results.html').then(function (response) {
-
             window.location = '/results.html'
             displayResult()
-
         })
 
     })
-    $('#btn-search').click(displayResult)
+    $('#btn-search').click(getData(promises, displayResult))
+
+    $('#btn-change').click(getData(promises, displayResult))
+    $('#btn-refresh').click(getData(promises, displayResult))
+
+    //getData(promises, displayResult)
+
+
 
 
 })

@@ -64,13 +64,37 @@
 							</div>
                             <hr />
 							<div id="details" class="p-2">
-
-								
+                            <!-- search result -->
+                             <p class="p-3">Start searching in the search box!</p>
 
 							</div>
 						</div>
-						<div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">Filter Tab</div>
-						<div class="tab-pane fade" id="weather" role="tabpanel" aria-labelledby="weather-tab">Weather Tab</div>
+						<div class="tab-pane fade" id="filter" role="tabpanel" aria-labelledby="filter-tab">
+                            <div class="p-5">
+                                <h5>Viewing Mode</h5>
+                                <input type="radio" name="show-park" value="marker" checked /> Park Locations<br/>     
+                                <input type="radio" name="show-park" value="area" /> Park Areas     
+                            </div>
+                             <div class="px-5 pb-5">
+                                <button id="btn-change">Change Mode</button>
+                            </div>
+                            <div class="px-5">
+                                <h5>Additonal Options</h5>
+                                <input type="checkbox" name="show-layers" value="cycling" /> Cycling Path<br/>
+                                <input type="checkbox" name="show-layers" value="trees" /> Trees<br/>
+                                <input type="checkbox" name="show-layers" value="pcn" /> Park Connectors<br/>
+                                <input type="checkbox" name="show-layers" value="tracks" /> National Parks Tracks</br>
+                            </div>
+                                          
+                            <div class="p-5">
+                                <button id="btn-refresh">Filter Results</button>
+                            </div>
+                        </div>
+						<div class="tab-pane fade" id="weather" role="tabpanel" aria-labelledby="weather-tab">
+
+                            Weather Tab
+
+                        </div>
 					</div>
 				</div>
 			</div>
