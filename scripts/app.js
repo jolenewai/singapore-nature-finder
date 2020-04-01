@@ -57,21 +57,20 @@ $(function () {
         }
     }
 
-    function getData(promises, displayResult) {
+    function getData() {
        
-        // axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
-        //     displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks)
-        // }))
-
         axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
-            return displayResult
+            displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks)
         }))
+
+        // axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
+        //     return displayResult
+        // }))
 
     }
 
     function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks) {
         
-        alert("hi")
         clearMarkers()
         // getData()
         $('#details').empty()
@@ -83,13 +82,13 @@ $(function () {
         if ($('input[name="show-park"]:checked')) {
             let showMode = $('input[name="show-park"]:checked').val()
             if (showMode == 'area') {
+
                 viewParksArea(nparks, query)
             } else {
+
                 viewParks(parks, query)
             }
         }
-
-        
 
         // let bound = parksLayer.getBounds(marker)
         // map.fitBounds(bound)
@@ -259,10 +258,10 @@ $(function () {
         })
 
     })
-    $('#btn-search').click(getData(promises, displayResult))
+    $('#btn-search').click(getData)
 
-    $('#btn-change').click(getData(promises, displayResult))
-    $('#btn-refresh').click(getData(promises, displayResult))
+    $('#btn-change').click(getData)
+    $('#btn-refresh').click(getData)
 
     //getData(promises, displayResult)
 
