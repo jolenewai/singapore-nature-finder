@@ -23,6 +23,8 @@ let cyclingAPI = "/data/cycling-path-network-geojson.geojson"
 let treesAPI = "/data/heritage-trees-geojson.geojson"
 let pcnAPI = "/data/park-connector-loop-geojson.geojson"
 let nParksTracksAPI = "/data/nparks-tracks-geojson.geojson"
+let parkDataAPI = "/data/park-data.csv"
+let weatherAPI = ""
 
 // declare variables for creating markers
 let parks
@@ -31,19 +33,24 @@ let cyclingPath
 let trees
 let pcn
 let nParksTracks
+let parkData
 let parksLayer
 let nParksLayer
+let treesLayer
+let pcnLayer
 let cyclingPathLayer
+let nParksTracksLayer
 let marker
 
- let promises = [
-            axios.get(parksAPI),
-            axios.get(nParksAPI),
-            axios.get(cyclingAPI),
-            axios.get(treesAPI),
-            axios.get(pcnAPI),
-            axios.get(nParksTracksAPI)
-        ];
+let promises = [
+    axios.get(parksAPI),
+    axios.get(nParksAPI),
+    axios.get(cyclingAPI),
+    axios.get(treesAPI),
+    axios.get(pcnAPI),
+    axios.get(nParksTracksAPI),
+    axios.get(parkDataAPI)
+];
 
 $(function () {
 
@@ -55,12 +62,32 @@ $(function () {
         if (nParksLayer) {
             nParksLayer.clearLayers()
         }
+
+        if (treesLayer) {
+            treesLayer.clearLayers()
+        }
+
+        if (pcnLayer) {
+            pcnLayer.clearLayers()
+        }
+
+        if (cyclingPathLayer) {
+            cyclingPathLayer.clearLayers()
+        }
+
+        if (nParksTracks) {
+            nParksTracks.clearLayers()
+        }
     }
 
     function getData() {
-       
-        axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
-            displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks)
+
+        axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
+            csv().fromString(parkData.data).then(function(pData){
+            //console.log(pData)
+            displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, pData)
+
+        })
         }))
 
         // axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
@@ -69,15 +96,15 @@ $(function () {
 
     }
 
-    function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks) {
-        
+    function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
+
         clearMarkers()
         // getData()
         $('#details').empty()
         $('#search-result-header').empty()
 
         let query = $('#query').val()
-        //console.log($('#park-area'))
+        console.log($(query))
 
         if ($('input[name="show-park"]:checked')) {
             let showMode = $('input[name="show-park"]:checked').val()
@@ -86,8 +113,27 @@ $(function () {
                 viewParksArea(nparks, query)
             } else {
 
-                viewParks(parks, query)
+                viewParks(parks, query, parkData)
             }
+        }
+
+        if ($('input[name="show-layers"]:checked')) {
+
+            let checkboxes = $('input[name="show-layers"]:checked')
+
+            checkboxes.each(function () {
+                let option = $(this).val()
+
+                if (option == 'cycling') {
+                    viewCyclingPath(cyclingPath, query)
+                } else if (option == 'trees') {
+                    viewTrees(trees, query)
+                } else if (option == 'pcn') {
+                    viewPCN(pcn, query)
+                } else if (option == 'tracks')
+                    viewNParksTracks(nParksTracks, query)
+            })
+
         }
 
         // let bound = parksLayer.getBounds(marker)
@@ -95,9 +141,7 @@ $(function () {
 
     }
 
-
-
-    function viewParks(parks, query) {
+    function viewParks(parks, query, parkData) {
 
         parksLayer = L.markerClusterGroup();
 
@@ -105,7 +149,7 @@ $(function () {
         //console.log(parks.data)
         for (let n of parks.data.features) {
             let desc = n.properties.Description
-
+            let parkDetails
             pName = $(desc).children().children().children().children().eq(14).text()
             // only show results with Park in the decription
             if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
@@ -113,27 +157,26 @@ $(function () {
 
                 parksLayer.addLayer(marker);
                 noOfResults = noOfResults + 1;
+                console.log(parkData[0])
+                for (let p of parkData){
+                    if (p["Park Name"] == pName ) {
 
+                         parkDetails = `
+                        <div class="card border-0">
+                            <img src="/images/park_images/${p["Park ID"]}.jpg" class="card-img-top" alt="${pName}" width="390" height="225">
+                            <p>${p.Location}</p>
+
+                            <h6>Accessibility:</h6>
+                            <p>${p.Accessibility}</p>
+                        </div>
+                        `
+                    }
+                }
 
                 let searchResult = `
                         <a href="#${noOfResults}"></a>
                         <h5>${pName}</h5>
-                        <div class="card border-0">
-                            <img src="/images/bg_image1.jpg" class="card-img-top" alt="${pName}" width="390" height="225">
-                            <h6>Getting There:</h6>
-                            <p>Alight at Labrador Park MRT station</p>
-
-                            <h6>Nature Reserve opening hours:</h6>
-                            <p>7:00 am to 7:00 pm daily (entering or remaining in the nature reserve after 7:00pm is not allowed)</p>
-
-                            <h6>Park and Berlayer Creek lighting hours:</h6>
-                            <p>7:00 pm to 7:00 am daily</p>
-
-                            <h6>Accessibility:</h6>
-                            <p>Wheelchair accessible</p>
-
-                            <p>No smoking Smoke-free park</p>
-                        </div>
+                        ${parkDetails}
                         <hr />
                     `
                 $('#details').append(searchResult)
@@ -150,13 +193,18 @@ $(function () {
     }
 
     function viewParksArea(nparks, query) {
-        //marking park areas
+
         nParksLayer = new L.geoJson(nparks.data, {
-            onEachFeature: (feature, layer) => {
+            filter: (feature, layer) => {  
+                desc = feature.properties.Description.toLowerCase()
+
+                return desc.indexOf(query) >= 0 
+            }, onEachFeature: (feature, layer) => {    
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
                 layer.bindPopup(pName);
             }
+            
         }).addTo(map);
 
         nParksLayer.setStyle({
@@ -170,9 +218,13 @@ $(function () {
     function viewCyclingPath(cyclingPath, query) {
         //marking cycling path
         cyclingPathLayer = new L.geoJson(cyclingPath.data, {
+            filter: (feature, layer) => {  
+                desc = feature.properties.Description.toLowerCase()
+
+                return desc.indexOf(query) >= 0 
+            },
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
-                //console.log($(desc).children().children().children().children())
                 pName = $(desc).children().children().children().children().eq(2).text()
                 layer.bindPopup(pName);
             }
@@ -189,11 +241,15 @@ $(function () {
     function viewNParksTracks(nParksTracks, query) {
         //mark nParksTracks
         nParksTracksLayer = new L.geoJson(nParksTracks.data, {
+            filter: (feature, layer) => {  
+                desc = feature.properties.Description.toLowerCase()
+
+                return desc.indexOf(query) >= 0 
+            },
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 //console.log($(desc).children().children().children().children())
-                //pName = 'Point A: '+ $(desc).children().children().children().children().eq(2).text()
-                //pName = pName + '<br/>Point B: ' + $(desc).children().children().children().children().eq(4).text()
+                pName = $(desc).children().children().children().children().eq(2).text()
                 layer.bindPopup(pName);
             }
         }).addTo(map)
@@ -248,7 +304,7 @@ $(function () {
 
     }
 
-     
+
 
     $('#btn-search-home').click(function () {
 
