@@ -24,7 +24,10 @@ let treesAPI = "/data/heritage-trees-geojson.geojson"
 let pcnAPI = "/data/park-connector-loop-geojson.geojson"
 let nParksTracksAPI = "/data/nparks-tracks-geojson.geojson"
 let parkDataAPI = "/data/park-data.csv"
-let weatherAPI = ""
+let weather2hrAPI = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast"
+let weather24hrAPI = "https://api.data.gov.sg/v1/environment/24-hour-weather-forecast"
+
+
 
 // declare variables for creating markers
 let parks
@@ -51,6 +54,12 @@ let promises = [
     axios.get(nParksTracksAPI),
     axios.get(parkDataAPI)
 ];
+
+
+
+
+
+
 
 $(function () {
 
@@ -79,6 +88,34 @@ $(function () {
             nParksTracks.clearLayers()
         }
     }
+// https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?date_time=2020-04-01T23%3A50%3A00&date=2020-04-01
+
+    
+
+    getWeather()
+
+    function getWeather(){
+
+        let date_time = moment().format('YYYY-MM-DDThh:mm:ss')
+        let date = moment().format('YYYY-MM-DD')
+        console.log(date_time)    
+        console.log(date)
+
+        let weatherPromises = [
+            axios.get(weather2hrAPI, {params:{
+                date_time, date
+            }}),
+            axios.get(weather24hrAPI, {params:{
+                date_time, date
+            }})
+        ]
+        axios.get(weatherPromises).then(axios.spread(function (weather2hr, weather24hr) {
+            console.log(weather2hr.data)
+            //displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, pData)
+
+        
+        }))
+    }
 
     function getData() {
 
@@ -95,7 +132,7 @@ $(function () {
         // }))
 
     }
-
+    
     function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
 
         clearMarkers()
@@ -104,7 +141,6 @@ $(function () {
         $('#search-result-header').empty()
 
         let query = $('#query').val()
-        console.log($(query))
 
         if ($('input[name="show-park"]:checked')) {
             let showMode = $('input[name="show-park"]:checked').val()
@@ -135,10 +171,6 @@ $(function () {
             })
 
         }
-
-        // let bound = parksLayer.getBounds(marker)
-        // map.fitBounds(bound)
-
     }
 
     function viewParks(parks, query, parkData) {
@@ -157,25 +189,33 @@ $(function () {
 
                 parksLayer.addLayer(marker);
                 noOfResults = noOfResults + 1;
-                console.log(parkData[0])
+
+                let location = ""
                 for (let p of parkData){
                     if (p["Park Name"] == pName ) {
+
+                        location = p.Location
 
                          parkDetails = `
                         <div class="card border-0">
                             <img src="/images/park_images/${p["Park ID"]}.jpg" class="card-img-top" alt="${pName}" width="390" height="225">
-                            <p>${p.Location}</p>
+                            <h6>Location:</h6>
+                            <p>${location}</p>
 
                             <h6>Accessibility:</h6>
                             <p>${p.Accessibility}</p>
                         </div>
                         `
                     }
+                } 
+
+                if (location==""){
+                    parkDetails = ""
                 }
 
                 let searchResult = `
                         <a href="#${noOfResults}"></a>
-                        <h5>${pName}</h5>
+                        <h6>${pName}</h6>
                         ${parkDetails}
                         <hr />
                     `
@@ -184,6 +224,8 @@ $(function () {
         }
 
         parksLayer.addTo(map)
+
+        //map.flyToBounds(marker.latLngBounds())
 
         let searchResultStr = `
                 <p class="p-3"> ${noOfResults} Search Results for <strong>${query}</strong></p>
@@ -197,7 +239,6 @@ $(function () {
         nParksLayer = new L.geoJson(nparks.data, {
             filter: (feature, layer) => {  
                 desc = feature.properties.Description.toLowerCase()
-
                 return desc.indexOf(query) >= 0 
             }, onEachFeature: (feature, layer) => {    
                 desc = feature.properties.Description
@@ -220,7 +261,6 @@ $(function () {
         cyclingPathLayer = new L.geoJson(cyclingPath.data, {
             filter: (feature, layer) => {  
                 desc = feature.properties.Description.toLowerCase()
-
                 return desc.indexOf(query) >= 0 
             },
             onEachFeature: (feature, layer) => {
@@ -243,7 +283,6 @@ $(function () {
         nParksTracksLayer = new L.geoJson(nParksTracks.data, {
             filter: (feature, layer) => {  
                 desc = feature.properties.Description.toLowerCase()
-
                 return desc.indexOf(query) >= 0 
             },
             onEachFeature: (feature, layer) => {
