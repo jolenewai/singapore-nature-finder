@@ -9,8 +9,80 @@ let promises = [
     axios.get(parkDataAPI)
 ];
 
-
 $(function () {
+
+
+    function getData(){
+        getApi(displaySearchResults)
+    }
+
+    function getApi(callback){
+
+        axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
+            csv().fromString(parkData.data).then(function (pData) {
+                //console.log(pData)
+                callback(parks, nparks, cyclingPath, trees, pcn, nParksTracks, pData)
+
+            })
+        }))
+
+
+        // axios.get(apiURL).then(function(response){
+        //     callback(response) 
+        // })
+
+    }
+
+    function getMarkers(n){
+
+        let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
+        parksLayer.addLayer(marker);  
+           
+    }
+
+
+
+    function displaySearchResults(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData){
+        
+        clearMarkers()
+        $('#details').empty()
+        $('#search-result-header').empty()
+
+        let query = $('#query').val()
+        let noOfResults = 0
+ 
+
+        if ($('input[name="show-park"]:checked')) {
+            let showMode = $('input[name="show-park"]:checked').val()
+            if (showMode == 'area') {
+
+                viewParksArea(nparks, query)
+            } else {
+                viewParks(parks, query, parkData)
+            }
+        }
+
+        if ($('input[name="show-layers"]:checked')) {
+
+            let checkboxes = $('input[name="show-layers"]:checked')
+
+            checkboxes.each(function () {
+                let option = $(this).val()
+
+                if (option == 'cycling') {
+                    viewCyclingPath(cyclingPath, query)
+                } else if (option == 'trees') {
+                    viewTrees(trees, query)
+                } else if (option == 'pcn') {
+                    viewPCN(pcn, query)
+                } else if (option == 'tracks')
+                    viewNParksTracks(nParksTracks, query)
+            })
+
+        }
+
+    }
+    
 
     function clearMarkers() {
         if (parksLayer) {
@@ -83,62 +155,6 @@ $(function () {
     }
 
 
-    function getData() {
-
-        axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
-            csv().fromString(parkData.data).then(function (pData) {
-                //console.log(pData)
-                displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, pData)
-
-            })
-        }))
-
-        // axios.all(promises).then(axios.spread(function (parks, nparks, cyclingPath, trees, pcn, nParksTracks){
-        //     return displayResult
-        // }))
-
-    }
-
-    function displayResult(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData) {
-
-        clearMarkers()
-        // getData()
-        $('#details').empty()
-        $('#search-result-header').empty()
-
-        let query = $('#query').val()
-
-        if ($('input[name="show-park"]:checked')) {
-            let showMode = $('input[name="show-park"]:checked').val()
-            if (showMode == 'area') {
-
-                viewParksArea(nparks, query)
-            } else {
-
-                viewParks(parks, query, parkData)
-            }
-        }
-
-        if ($('input[name="show-layers"]:checked')) {
-
-            let checkboxes = $('input[name="show-layers"]:checked')
-
-            checkboxes.each(function () {
-                let option = $(this).val()
-
-                if (option == 'cycling') {
-                    viewCyclingPath(cyclingPath, query)
-                } else if (option == 'trees') {
-                    viewTrees(trees, query)
-                } else if (option == 'pcn') {
-                    viewPCN(pcn, query)
-                } else if (option == 'tracks')
-                    viewNParksTracks(nParksTracks, query)
-            })
-
-        }
-    }
-
     function viewParks(parks, query, parkData) {
 
         parksLayer = L.markerClusterGroup();
@@ -152,9 +168,8 @@ $(function () {
 
             // only show results with Park in the decription
             if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
-                let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
-                
-                parksLayer.addLayer(marker);
+                getMarkers(n)
+
                 noOfResults = noOfResults + 1;
 
                 let location = ""
@@ -189,12 +204,6 @@ $(function () {
                         <hr />
                     `    
                 $('#details').append(searchResult)
-                // $('a.result-name').click(function(){
-
-                //     map.marker[noOfResults].fire('click');
-                //     let coords = map.marker[noOfResults]._latlng;
-                //     map.setView(coords, 12);
-                // })
 
             }
         }
@@ -337,8 +346,7 @@ $(function () {
 
     getWeather()
 
-
-    //getData(promises, displayResult)
+    
 
 
 })
