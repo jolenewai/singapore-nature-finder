@@ -113,14 +113,14 @@ $(function () {
 
             let weatherText = `
                 <div class="p-5">
-                    <h3 class="bluetext">24-hour <br/>Weather Forecast</h3>
+                    <h3 class="bluetext">24-hour Weather Forecast</h3>
                     <span class="weatherText">${forecast} </span>
-                    <p>Average Temperature</br>
-                    <span class="tempNumber">
+                    <p>Temperature in Average</br>
+                    <span class="tempNumber pt-0">
                     ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
                     </span><br/>
                     <span class="highlow">
-                        ${lowTemp}<sup>°</sup> / ${highTemp}<sup>°</sup>
+                        <small><sup>Lo</sup> </small>${lowTemp}<sup>°</sup> / <small><sup>Hi</sup></small> ${highTemp}<sup>°</sup>
                     </span>
                 </div>
             `
