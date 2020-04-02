@@ -1,51 +1,3 @@
-// //foursquare clientid
-// let clientId = "IRDBUTDRK0IU2A1O2LWFJPFUTNUSTQFZEOPP5QWVXOQ0LMDM"
-// let clientSecret = "XX32BTHUQ3MU5QXPATTSHF4Z3ASR3VPE2W5F2FGZ21Z1B5ZW"
-
-// //foursquare api base URL
-// let foursquareURL = "https://api.foursquare.com/v2/venues/search"
-
-// let natureCat = "4d4b7105d754a06377d81259"
-// let foursquareParam = {
-//         client_id: clientId, 
-//         client_secret: clientSecret, 
-//         near: "Singapore",
-//         categoryId: natureCat,
-//         v:"20200328"
-// }
-
-// let foursquareData = null
-
-//Parks and NParks data from Data.gov.sg
-let parksAPI = "/data/parks-geojson.geojson"
-let nParksAPI = "/data/nparks-parks-geojson.geojson"
-let cyclingAPI = "/data/cycling-path-network-geojson.geojson"
-let treesAPI = "/data/heritage-trees-geojson.geojson"
-let pcnAPI = "/data/park-connector-loop-geojson.geojson"
-let nParksTracksAPI = "/data/nparks-tracks-geojson.geojson"
-let parkDataAPI = "/data/park-data.csv"
-
-// https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?date_time=2020-04-01T23%3A50%3A00&date=2020-04-01
-let weather2hrAPI = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast"
-let weather24hrAPI = "https://api.data.gov.sg/v1/environment/24-hour-weather-forecast"
-
-
-
-// declare variables for creating markers
-let parks
-let nParks
-let cyclingPath
-let trees
-let pcn
-let nParksTracks
-let parkData
-let parksLayer
-let nParksLayer
-let treesLayer
-let pcnLayer
-let cyclingPathLayer
-let nParksTracksLayer
-let marker
 
 let promises = [
     axios.get(parksAPI),
@@ -56,7 +8,6 @@ let promises = [
     axios.get(nParksTracksAPI),
     axios.get(parkDataAPI)
 ];
-
 
 
 $(function () {
@@ -98,38 +49,39 @@ $(function () {
             date_time, date
         }
 
-        axios.get(weather2hrAPI, { params }).then(function (response) {
-            weather2hr = response.data
+        axios.get(weather24hrAPI, { params }).then(function (response) {
+            displayWeather(response.data)
+            
         })
 
-        axios.get(weather24hrAPI, { params }).then(function (response) {
-            weather24hr = response.data
+    }
 
-            let forecast = weather24hr.items[0].general.forecast
-            let lowTemp = weather24hr.items[0].general.temperature.low
-            let highTemp = weather24hr.items[0].general.temperature.high
+    function displayWeather(weatherData){
+        let forecast = weatherData.items[0].general.forecast
+            let lowTemp = weatherData.items[0].general.temperature.low
+            let highTemp = weatherData.items[0].general.temperature.high
 
             let aveTemp = Math.floor((lowTemp + highTemp) / 2)
 
             let weatherText = `
                 <div class="p-5">
-                    <h3 class="bluetext">24-hour Weather Forecast</h3>
+                    <h3 class="bluetext mb-3">Weather in Singapore<br/><small>24 Hours Forecast</small></h3>
+                    
                     <span class="weatherText">${forecast} </span>
                     <p>Temperature in Average</br>
                     <span class="tempNumber pt-0">
                     ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
                     </span><br/>
                     <span class="highlow">
-                        <small><sup>Lo</sup> </small>${lowTemp}<sup>°</sup> / <small><sup>Hi</sup></small> ${highTemp}<sup>°</sup>
+                        <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
                     </span>
                 </div>
             `
 
             $('#weather').empty()
             $('#weather').append(weatherText)
-        })
-
     }
+
 
     function getData() {
 
@@ -197,18 +149,21 @@ $(function () {
             let desc = n.properties.Description
             let parkDetails
             pName = $(desc).children().children().children().children().eq(14).text()
+
             // only show results with Park in the decription
             if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
-                let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup(pName)
-
+                let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
+                
                 parksLayer.addLayer(marker);
                 noOfResults = noOfResults + 1;
 
                 let location = ""
+                console.log(pName)
                 for (let p of parkData) {
                     if (p["Park Name"] == pName) {
 
                         location = p.Location
+                        accessibility = p.Accessibility
 
                         parkDetails = `
                         <div class="card border-0">
@@ -216,8 +171,8 @@ $(function () {
                             <h6>Location:</h6>
                             <p>${location}</p>
 
-                            <h6>Accessibility:</h6>
-                            <p>${p.Accessibility}</p>
+                            <h6>Accessibility:</h6> 
+                            <p>${accessibility}</p>
                         </div>
                         `
                     }
@@ -229,11 +184,18 @@ $(function () {
 
                 let searchResult = `
                         <a href="#${noOfResults}"></a>
-                        <h6>${pName}</h6>
+                        <h6 class="bluetext"><i class="fas fa-seedling pr-2"></i> <a href="#" class="result-name">${pName}</a></h6>
                         ${parkDetails}
                         <hr />
-                    `
+                    `    
                 $('#details').append(searchResult)
+                // $('a.result-name').click(function(){
+
+                //     map.marker[noOfResults].fire('click');
+                //     let coords = map.marker[noOfResults]._latlng;
+                //     map.setView(coords, 12);
+                // })
+
             }
         }
 
@@ -365,7 +327,11 @@ $(function () {
         })
 
     })
+
+
+    //assign function to buttons
     $('#btn-search').click(getData)
+    //$(input['radio']['name="show-park"']).change(getData)
     $('#btn-change').click(getData)
     $('#btn-refresh').click(getData)
 

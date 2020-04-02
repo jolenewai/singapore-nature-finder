@@ -12,7 +12,7 @@ body{
         background-repeat: no-repeat;        
         height:100%;
         font-family: Roboto, sans-serif;
-        font-size: 0.88em;
+        font-size: 0.95em; */
         /* letter-spacing: 0.1em; */
         transition: all .2s ease;
         color:#707070;
@@ -80,6 +80,7 @@ body{
     z-index: 1030;
     position: fixed;
     left:10;
+    width: 380px;
 }
 
 p {
@@ -133,6 +134,9 @@ p {
     color:#002640;
 }
 
+.lightgreen-text {
+    color:#DEE0BE;
+}
 
 .lightbrown {
     background-color:#D4BA83; 
@@ -143,6 +147,8 @@ p {
 }
 .tempNumber {
     font-size: 6em;
+    font-weight: 400;
+    color: #476220;
 }
 
 .tempDegree {
@@ -152,4 +158,17 @@ p {
 .highlow {
     font-size: 1.5em;
 
+}
+
+.btn-primary:active, 
+.btn-primary:hover,
+.btn-primary:visited
+
+ {
+    background-color: #99A139;
+}
+
+
+.nav-item .nav-link {
+    color:#476220;
 }
