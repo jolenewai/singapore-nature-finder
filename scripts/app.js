@@ -199,6 +199,7 @@ $(function () {
             }    
 
             weather2hrLayer.addTo(map)
+            map.setView(sgLl, 12)
             
         })
     }
@@ -207,7 +208,6 @@ $(function () {
         return obj.find(function(v){ return v[key] === value});
       }
 
-    function displayAreaWeather(weather2hr){}
 
     function displayWeather(weatherData){
         let forecast = weatherData.items[0].general.forecast
@@ -234,10 +234,7 @@ $(function () {
             $('#forecast24hr').empty()
             $('#forecast24hr').append(weatherText)
     }
-
-    function pageReady(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData){
-
-    }
+    
 
     function viewParks(parks, query, parkData) {
 
