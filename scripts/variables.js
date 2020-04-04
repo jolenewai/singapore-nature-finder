@@ -26,6 +26,7 @@ let nParksTracksAPI = "/data/nparks-tracks-geojson.geojson"
 let parkDataAPI = "/data/park-data.csv"
 
 // https://api.data.gov.sg/v1/environment/24-hour-weather-forecast?date_time=2020-04-01T23%3A50%3A00&date=2020-04-01
+let weather2hrAPI = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast"
 let weather24hrAPI = "https://api.data.gov.sg/v1/environment/24-hour-weather-forecast"
 
 // declare variables for creating markers

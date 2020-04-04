@@ -45,10 +45,13 @@ body{
 }
 
 #info-tab{
-    min-height: 300px;
+    /* min-height: 300px; */
     background-color:#fff;
-    top: 100px;
-    min-width: 350px;
+    z-index: 1030;
+    position: fixed;
+    width: 350px;
+    top: 110px;
+    left:0px;
 }
 
 #myTabContent {
@@ -60,14 +63,15 @@ body{
     width:100%;
 }    
 
-#logo, #search-bar-wrapper {
+#logo {
     z-index: 700;
     position: fixed; 
     top:0;
+    width:100px;
 }
 
 #search-bar{
-    min-width:220px;
+    min-width:200px;
 }
 #logo {
     left: 15px;
@@ -76,12 +80,7 @@ body{
 #logo img{
     max-height:70px;
 }
-#info-tab {
-    z-index: 1030;
-    position: fixed;
-    left:10;
-    width: 380px;
-}
+
 
 p {
     font-weight:200;
@@ -100,10 +99,8 @@ p {
     height: 100%;
 }
 
-
 .text-shadow {
     text-shadow: 2px 2px 6px #333 ;
-
 }
 
 .bg-main {
@@ -113,20 +110,11 @@ p {
 .logo-margin{
     margin-left: 50px;
 }
-.navbar-bg{
-    opacity: 20%;
-    background-color: #99A139;
-    position: fixed;
-    top:0;
-    z-index: 1020;
-    height: 100px;
-    width: 100%;
-}
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip{
     background-color: #DEE0BE;
-
 }
+
 .leaflet-popup-content{
     padding:5px 3px 3px 3px;
     font-weight: 500;
@@ -135,11 +123,23 @@ p {
 }
 
 .lightgreen-text {
-    color:#DEE0BE;
+    color:#94BE39;
+}
+
+.lightgreen-bg {
+    background-color:#94BE39;
+}
+
+.lightbrown-text {
+    color:#D4BA83;
 }
 
 .lightbrown {
     background-color:#D4BA83; 
+}
+
+.lightblue-text{
+    color:#83B6D9;
 }
 
 .weatherText {
@@ -159,11 +159,9 @@ p {
     font-size: 1.5em;
 
 }
-
+.btn-primary:visited,
 .btn-primary:active, 
-.btn-primary:hover,
-.btn-primary:visited
-
+.btn-primary:hover
  {
     background-color: #99A139;
 }
@@ -171,4 +169,14 @@ p {
 
 .nav-item .nav-link {
     color:#476220;
+}
+
+#tab-toggle.active, #tab-toggle:hover{
+    border: none !important;
+}
+
+#tab-toggle a:visited.
+#tab-toggle a:hover{
+    color:#476220;
+
 }

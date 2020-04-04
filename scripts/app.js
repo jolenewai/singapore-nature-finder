@@ -9,8 +9,13 @@ let promises = [
     axios.get(parkDataAPI)
 ];
 
-$(function () {
 
+let parkObject = {}
+
+let weather2hrLayer
+
+
+$(function () {
 
     function getData(){
         getApi(displaySearchResults)
@@ -39,7 +44,6 @@ $(function () {
         parksLayer.addLayer(marker);  
            
     }
-
 
 
     function displaySearchResults(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData){
@@ -108,14 +112,15 @@ $(function () {
         if (nParksTracks) {
             nParksTracks.clearLayers()
         }
+
+        if (weather2hrLayer) {
+            weather2hrLayer.clearLayers()
+        }
     }
 
     function getWeather() {
-
         let date_time = moment().format()
         let date = moment().format('YYYY-MM-DD')
-        console.log(date_time)
-        console.log(date)
 
         params = {
             date_time, date
@@ -128,6 +133,82 @@ $(function () {
 
     }
 
+    function get2hrWeather(){
+
+        let date_time = moment().format()
+        let date = moment().format('YYYY-MM-DD')
+
+        params = {
+            date_time, date
+        }
+
+        console.log(date_time)
+
+        axios.get(weather2hrAPI, { params }).then(function (response) {
+
+            let weather2hr = response.data
+            weather2hrLayer = new L.layerGroup()
+            console.log(weather2hr)
+
+            let weatherIcons =
+                [
+                    { 
+                        weather: "Partly Cloudy (Day)",
+                        icon: "1"
+                    },    
+                    {
+                        weather: "Partly Cloudy (Night)",
+                        icon:"cloudyNight"
+                    } ,              
+                
+                    { 
+                        weather: "Light Rain",
+                        icon: "rainy"
+                    }              
+                ]
+
+            for (let i=0; i< weather2hr.area_metadata.length; i++){
+
+                area = weather2hr.area_metadata[i]
+                
+                let forecast = weather2hr.items[0].forecasts[i].forecast
+                                
+                switch (forecast){
+
+                    case "Partly Cloudy (Day)":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Partly Cloudy (Night)":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Light Rain":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: rainy} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+                    
+                    case ("Showers" || "Thunder Storm"):
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+                    
+                } 
+
+                
+                 weather2hrLayer.addLayer(marker)
+
+            }    
+
+            weather2hrLayer.addTo(map)
+            
+        })
+    }
+
+    function filterValue(obj, key, value) {
+        return obj.find(function(v){ return v[key] === value});
+      }
+
+    function displayAreaWeather(weather2hr){}
+
     function displayWeather(weatherData){
         let forecast = weatherData.items[0].general.forecast
             let lowTemp = weatherData.items[0].general.temperature.low
@@ -136,31 +217,34 @@ $(function () {
             let aveTemp = Math.floor((lowTemp + highTemp) / 2)
 
             let weatherText = `
-                <div class="p-5">
-                    <h3 class="bluetext mb-3">Weather in Singapore<br/><small>24 Hours Forecast</small></h3>
+                    <h2 class="bluetext mb-4">Today's Forecast<br/></h2>
                     
-                    <span class="weatherText">${forecast} </span>
-                    <p>Temperature in Average</br>
-                    <span class="tempNumber pt-0">
+                    <p class="weatherText mt-0 pt-0 pb-0 mb-0">${forecast} </span></p>
+                    <p class="pb-0 mb-0">Average Temperature for the <br/>
+                    next 24 Hours in Singapore</p>
+
+                    <div class="tempNumber my-0 py-0">
                     ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
-                    </span><br/>
-                    <span class="highlow">
+                    </div>
+                    <p class="highlow">
                         <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
-                    </span>
-                </div>
+                    </p>
             `
 
-            $('#weather').empty()
-            $('#weather').append(weatherText)
+            $('#forecast24hr').empty()
+            $('#forecast24hr').append(weatherText)
     }
 
+    function pageReady(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData){
+
+    }
 
     function viewParks(parks, query, parkData) {
 
         parksLayer = L.markerClusterGroup();
 
         let noOfResults = 0
-        //console.log(parks.data)
+
         for (let n of parks.data.features) {
             let desc = n.properties.Description
             let parkDetails
@@ -173,33 +257,36 @@ $(function () {
                 noOfResults = noOfResults + 1;
 
                 let location = ""
-                console.log(pName)
-                for (let p of parkData) {
-                    if (p["Park Name"] == pName) {
 
+                for (let p of parkData) {
+
+                    if (p['Park Name'].trim().toLowerCase() == pName.trim().toLowerCase()) {
+ 
                         location = p.Location
                         accessibility = p.Accessibility
-
+                        parkID = p['Park ID'] 
+                        
                         parkDetails = `
-                        <div class="card border-0">
-                            <img src="/images/park_images/${p["Park ID"]}.jpg" class="card-img-top" alt="${pName}" width="390" height="225">
-                            <h6>Location:</h6>
-                            <p>${location}</p>
+                            <div class="card border-0">
+                                <img src="/images/park_images/${parkID}.jpg" class="card-img-top pb-2" alt="${pName}" width="390" height="225">
+                                <h6>Location:</h6>
+                                <p>${location}</p>
 
-                            <h6>Accessibility:</h6> 
-                            <p>${accessibility}</p>
-                        </div>
-                        `
+                                <h6>Accessibility:</h6> 
+                                <p>${accessibility}</p>
+                            </div>
+                            `
                     }
-                }
 
-                if (location == "") {
+                }
+                
+                if (location == ''){
                     parkDetails = ""
                 }
 
                 let searchResult = `
                         <a href="#${noOfResults}"></a>
-                        <h6 class="bluetext"><i class="fas fa-seedling pr-2"></i> <a href="#" class="result-name">${pName}</a></h6>
+                        <h6 class="bluetext"><i class="fas fa-seedling pr-2"></i> ${pName}</h6>
                         ${parkDetails}
                         <hr />
                     `    
@@ -219,13 +306,10 @@ $(function () {
 
     }
 
-    function viewParksArea(nparks, query) {
+    function viewParksArea(nparks) {
 
         nParksLayer = new L.geoJson(nparks.data, {
-            filter: (feature, layer) => {
-                desc = feature.properties.Description.toLowerCase()
-                return desc.indexOf(query) >= 0
-            }, onEachFeature: (feature, layer) => {
+             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
                 layer.bindPopup(pName);
@@ -257,7 +341,6 @@ $(function () {
 
         cyclingPathLayer.setStyle({
             color: '#563B28',
-            // fillColor: 'red',
             weight: 2,
             Opacity: 0.3
         })
@@ -280,7 +363,6 @@ $(function () {
 
         nParksTracksLayer.setStyle({
             color: '#196C00',
-            // fillColor: 'red',
             weight: 2,
             Opacity: 0.5
         })
@@ -340,10 +422,14 @@ $(function () {
 
     //assign function to buttons
     $('#btn-search').click(getData)
-    //$(input['radio']['name="show-park"']).change(getData)
+    $("input[type='radio'][name='show-park']").change(getData)
     $('#btn-change').click(getData)
     $('#btn-refresh').click(getData)
+    $('#btn-forecast').click(get2hrWeather)
+    $('#tab-toggle').click(function(){
+        $('#myTabContent').slideToggle()
 
+    })
     getWeather()
 
     
