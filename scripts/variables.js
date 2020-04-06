@@ -44,3 +44,20 @@ let pcnLayer
 let cyclingPathLayer
 let nParksTracksLayer
 let marker
+
+
+
+let promises = [
+    axios.get(parksAPI),
+    axios.get(nParksAPI),
+    axios.get(cyclingAPI),
+    axios.get(treesAPI),
+    axios.get(pcnAPI),
+    axios.get(nParksTracksAPI),
+    axios.get(parkDataAPI)
+];
+
+
+let parkObject = {}
+
+let weather2hrLayer

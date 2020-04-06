@@ -23,10 +23,12 @@ function get2hrWeather(){
     }
 
     console.log(date_time)
+    clearMarkers();
 
     axios.get(weather2hrAPI, { params }).then(function (response) {
         
         let weather2hr = response.data
+<<<<<<< HEAD
 
         if (weather2hrLayer) {
             weather2hrLayer.clearLayers()
@@ -36,6 +38,12 @@ function get2hrWeather(){
 
         console.log(weather2hr)
 
+=======
+
+        weather2hrLayer = new L.layerGroup()
+        console.log(weather2hr)
+
+>>>>>>> origin/rewrite-functions
         for (let i=0; i< weather2hr.area_metadata.length; i++){
 
             area = weather2hr.area_metadata[i]
@@ -46,7 +54,11 @@ function get2hrWeather(){
                             
             switch (forecast){
 
+<<<<<<< HEAD
                 case ("Partly Cloudy (Day)" || "Cloudy"):
+=======
+                case "Partly Cloudy (Day)" || "Cloudy":
+>>>>>>> origin/rewrite-functions
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
                 break;
 
@@ -58,7 +70,7 @@ function get2hrWeather(){
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: rainy} ).bindPopup(area.name + '<br>' + forecast )
                 break;
                 
-                case ("Showers" || "Thunder Storm"):
+                case ("Showers" || "Thundery Showers"):
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
                 break;
                 

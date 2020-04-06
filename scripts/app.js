@@ -1,20 +1,3 @@
-
-let promises = [
-    axios.get(parksAPI),
-    axios.get(nParksAPI),
-    axios.get(cyclingAPI),
-    axios.get(treesAPI),
-    axios.get(pcnAPI),
-    axios.get(nParksTracksAPI),
-    axios.get(parkDataAPI)
-];
-
-
-let parkObject = {}
-
-let weather2hrLayer
-
-
 $(function () {
 
     function getData(){
@@ -38,23 +21,29 @@ $(function () {
 
     }
 
+<<<<<<< HEAD
     function getMarkers(n,layer){
+=======
+>>>>>>> origin/rewrite-functions
 
-        let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
-        layer.addLayer(marker);  
-           
-    }
 
 
     function displaySearchResults(parks, nparks, cyclingPath, trees, pcn, nParksTracks, parkData){
         
         clearMarkers()
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/rewrite-functions
         $('#details').empty()
         $('#search-result-header').empty()
 
         let query = $('#query').val()
+<<<<<<< HEAD
         let noOfResults = 0
  
+=======
+>>>>>>> origin/rewrite-functions
 
         if ($('input[name="show-park"]:checked')) {
             let showMode = $('input[name="show-park"]:checked').val()
@@ -86,9 +75,20 @@ $(function () {
         }
 
     }
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/rewrite-functions
 
     function clearMarkers() {
+        if (parksLayer) {
+            parksLayer.clearLayers()
+        }
+
+        if (nParksLayer) {
+            nParksLayer.clearLayers()
+        }
+
         if (parksLayer) {
             parksLayer.clearLayers()
         }
@@ -116,18 +116,48 @@ $(function () {
         if (weather2hrLayer) {
             weather2hrLayer.clearLayers()
         }
+<<<<<<< HEAD
+=======
+
+        if (weather2hrLayer) {
+            weather2hrLayer.clearLayers()
+        }
+        
+>>>>>>> origin/rewrite-functions
     }
 
+<<<<<<< HEAD
 
     function filterValue(obj, key, value) {
         return obj.find(function(v){ return v[key] === value});
       }
 
+=======
+        // console.log(parks)
+        axios.get(parkDataAPI).then(function(parkData){
+            csv().fromString(parkData.data).then(function (pData) {
+                parkData = pData
+                if (parksLayer) {
+                    parksLayer.clearLayers()
+                } else {
+                    parksLayer = L.markerClusterGroup();
+                }
+                
+                let noOfResults = 0
+>>>>>>> origin/rewrite-functions
 
  
     function viewParks(parks, query, parkData) {
 
+<<<<<<< HEAD
         parksLayer = L.markerClusterGroup();
+=======
+                    // only show results with Park in the decription
+                    if (desc.indexOf(query) >= 0 || desc.indexOf(query) >= 0) {
+
+                        let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
+                        parksLayer.addLayer(marker); 
+>>>>>>> origin/rewrite-functions
 
         let noOfResults = 0
 
@@ -193,8 +223,14 @@ $(function () {
     }
 
     function viewParksArea(nparks) {
+<<<<<<< HEAD
 
         nParksLayer = new L.geoJson(nparks.data, {
+=======
+        clearMarkers()
+        
+        nParksLayer = new L.geoJson(nparks, {
+>>>>>>> origin/rewrite-functions
              onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
@@ -296,14 +332,153 @@ $(function () {
 
     }
 
+<<<<<<< HEAD
     $('#btn-search-home').click(function () {
+=======
+    function switchLayer(){
 
-        axios.get('/results.html').then(function (response) {
-            window.location = '/results.html'
-            displayResult()
+        query = ""
+
+        if ($('input[name="show-park"]:checked')) {
+            let showMode = $('input[name="show-park"]:checked').val()
+            
+            if (showMode == 'area') {
+                getData(nParksAPI, viewParksArea)
+            } else if (showMode == 'marker') {
+                getData(parksAPI, displaySearchResults)
+            }
+        }
+
+    }
+
+    function addLayer(){
+
+        clearMarkers()
+
+        if ($('input[name="show-layers"]:checked')) {
+
+            let checkboxes = $('input[name="show-layers"]:checked')
+
+            checkboxes.each(function () {
+                let option = $(this).val()
+
+                if (option == 'cycling') {
+                    getData(cyclingAPI, viewCyclingPath)
+                } else if (option == 'trees') {
+                    getData(treesAPI, viewTrees)
+                } else if (option == 'pcn') {
+                    getData(pcnAPI, viewPCN)
+                } else if (option == 'tracks')
+                    getData(nParksTracksAPI, viewNParksTracks)
+            })
+
+        }
+
+
+    }
+
+    function getWeather() {
+        let date_time = moment().format()
+        let date = moment().format('YYYY-MM-DD')
+>>>>>>> origin/rewrite-functions
+
+        params = {
+            date_time, date
+        }
+
+        axios.get(weather24hrAPI, { params }).then(function (response) {
+            displayWeather(response.data)
+            
         })
 
-    })
+    }
+
+    function get2hrWeather(){
+
+        let date_time = moment().format()
+        let date = moment().format('YYYY-MM-DD')
+
+        params = {
+            date_time, date
+        }
+
+        clearMarkers();
+
+        axios.get(weather2hrAPI, { params }).then(function (response) {
+
+            let weather2hr = response.data
+            weather2hrLayer = new L.layerGroup()
+            console.log(weather2hr)
+            for (let i=0; i< weather2hr.area_metadata.length; i++){
+
+                area = weather2hr.area_metadata[i]
+                
+                let forecast = weather2hr.items[0].forecasts[i].forecast
+                                
+                switch (forecast){
+
+                    case "Partly Cloudy (Day)":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Cloudy":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Partly Cloudy (Night)":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Light Showers":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: rainy} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+                    
+                    case "Showers":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+                    
+                    case "Thundery Showers":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+                } 
+
+                
+                weather2hrLayer.addLayer(marker)
+
+            }    
+
+            weather2hrLayer.addTo(map)
+            map.setView(sgLl, 12)
+            
+        })
+    }
+
+
+    function displayWeather(weatherData){
+        let forecast = weatherData.items[0].general.forecast
+            let lowTemp = weatherData.items[0].general.temperature.low
+            let highTemp = weatherData.items[0].general.temperature.high
+
+            let aveTemp = Math.floor((lowTemp + highTemp) / 2)
+
+            let weatherText = `
+                    <h3 class="bluetext mb-0 mt-2">24 Hours Forecast</h3>
+                    
+                    <p class="weatherText mt-0 pt-0 pb-0 mb-0">${forecast} </span></p>
+                    <p class="pb-0 mb-0">Average Temperature<br/>
+
+                    <div class="tempNumber my-0 py-0">
+                    ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
+                    </div>
+                    <p class="highlow">
+                        <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
+                    </p>
+            `
+
+            $('#forecast24hr').empty()
+            $('#forecast24hr').append(weatherText)
+    }
+
 
 
     //assign function to buttons
@@ -316,9 +491,15 @@ $(function () {
         $('#myTabContent').slideToggle()
 
     })
+<<<<<<< HEAD
     getWeather()
 
     
 
 
+=======
+
+    getWeather();
+    $('#btn-forecast').click(get2hrWeather)
+>>>>>>> origin/rewrite-functions
 })
