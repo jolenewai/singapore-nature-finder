@@ -56,7 +56,7 @@ body{
 
 #myTabContent {
     overflow-y: scroll;
-    height: 500px;
+    height: 400px;
 }
 
 #search-result-header{
@@ -178,5 +178,16 @@ p {
 #tab-toggle a:visited.
 #tab-toggle a:hover{
     color:#476220;
+
+}
+
+
+@media (max-width: 575.98px) { 
+    
+
+    #myTabContent {
+        overflow-y: scroll;
+        height: 300px;
+    }
 
 }
