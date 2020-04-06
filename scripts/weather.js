@@ -23,29 +23,14 @@ function get2hrWeather(){
     }
 
     console.log(date_time)
+    clearMarkers();
 
     axios.get(weather2hrAPI, { params }).then(function (response) {
 
         let weather2hr = response.data
+
         weather2hrLayer = new L.layerGroup()
         console.log(weather2hr)
-
-        let weatherIcons =
-            [
-                { 
-                    weather: "Partly Cloudy (Day)",
-                    icon: "1"
-                },    
-                {
-                    weather: "Partly Cloudy (Night)",
-                    icon:"cloudyNight"
-                } ,              
-            
-                { 
-                    weather: "Light Rain",
-                    icon: "rainy"
-                }              
-            ]
 
         for (let i=0; i< weather2hr.area_metadata.length; i++){
 
@@ -55,7 +40,7 @@ function get2hrWeather(){
                             
             switch (forecast){
 
-                case "Partly Cloudy (Day)":
+                case "Partly Cloudy (Day)" || "Cloudy":
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
                 break;
 
@@ -63,11 +48,11 @@ function get2hrWeather(){
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
                 break;
 
-                case "Light Rain":
+                case "Light Showers":
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: rainy} ).bindPopup(area.name + '<br>' + forecast )
                 break;
                 
-                case ("Showers" || "Thunder Storm"):
+                case ("Showers" || "Thundery Showers"):
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
                 break;
                 
