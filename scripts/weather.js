@@ -25,45 +25,36 @@ function get2hrWeather(){
     console.log(date_time)
 
     axios.get(weather2hrAPI, { params }).then(function (response) {
-
+        
         let weather2hr = response.data
-        weather2hrLayer = new L.layerGroup()
-        console.log(weather2hr)
 
-        let weatherIcons =
-            [
-                { 
-                    weather: "Partly Cloudy (Day)",
-                    icon: "1"
-                },    
-                {
-                    weather: "Partly Cloudy (Night)",
-                    icon:"cloudyNight"
-                } ,              
-            
-                { 
-                    weather: "Light Rain",
-                    icon: "rainy"
-                }              
-            ]
+        if (weather2hrLayer) {
+            weather2hrLayer.clearLayers()
+        } else {
+            weather2hrLayer = new L.layerGroup()
+        }
+
+        console.log(weather2hr)
 
         for (let i=0; i< weather2hr.area_metadata.length; i++){
 
             area = weather2hr.area_metadata[i]
             
             let forecast = weather2hr.items[0].forecasts[i].forecast
+
+            console.log(forecast)
                             
             switch (forecast){
 
-                case "Partly Cloudy (Day)":
+                case ("Partly Cloudy (Day)" || "Cloudy"):
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
                 break;
 
-                case "Partly Cloudy (Night)":
+                case ("Partly Cloudy (Night)" || "Cloudy (Night)"):
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
                 break;
 
-                case "Light Rain":
+                case "Light Showers":
                     marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: rainy} ).bindPopup(area.name + '<br>' + forecast )
                 break;
                 
@@ -79,7 +70,7 @@ function get2hrWeather(){
         }    
 
         weather2hrLayer.addTo(map)
-        map.setView(sgLl, 12)
+        //map.setView(sgLl, 12)
         
     })
 }
