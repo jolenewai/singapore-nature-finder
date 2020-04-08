@@ -29,8 +29,10 @@ let parkDataAPI = "/data/park-data.csv"
 let weather2hrAPI = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast"
 let weather24hrAPI = "https://api.data.gov.sg/v1/environment/24-hour-weather-forecast"
 
+//https://data.gov.sg/dataset/ultraviolet-index-uvi
+
 // declare variables for creating markers
-let parks
+let parks   
 let nParks
 let cyclingPath
 let trees
@@ -44,7 +46,6 @@ let pcnLayer
 let cyclingPathLayer
 let nParksTracksLayer
 let marker
-
 
 
 let promises = [
@@ -61,3 +62,4 @@ let promises = [
 let parkObject = {}
 
 let weather2hrLayer
+

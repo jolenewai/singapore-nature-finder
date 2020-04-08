@@ -1,5 +1,5 @@
 let sgLl = [1.3521, 103.8198]
-let map = L.map("map-container").setView(sgLl,12)
+let map = L.map("map-container").setView(sgLl,11)
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',

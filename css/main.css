@@ -56,7 +56,7 @@ body{
 
 #myTabContent {
     overflow-y: scroll;
-    height: 400px;
+    height: 500px;
 }
 
 #search-result-header{
@@ -80,7 +80,6 @@ body{
 #logo img{
     max-height:70px;
 }
-
 
 p {
     font-weight:200;
@@ -166,7 +165,6 @@ p {
     background-color: #99A139;
 }
 
-
 .nav-item .nav-link {
     color:#476220;
 }
@@ -178,9 +176,7 @@ p {
 #tab-toggle a:visited,
 #tab-toggle a:hover{
     color:#476220;
-
 }
-
 
 @media (max-width: 575.98px) { 
     
