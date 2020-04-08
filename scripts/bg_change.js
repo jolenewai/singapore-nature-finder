@@ -16,7 +16,8 @@ $(function(){
     }
     function changeImage(){
         let randNum = Math.floor(Math.random() * 8)
-        $('body').css("background-image", "url(\'"+imgPath+bgImages[randNum]+"\')")        
+        $('#home').css("background-image", "url(\'"+imgPath+bgImages[randNum]+"\')")   
+        console.log(randNum)     
     }
 
     preload()

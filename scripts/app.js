@@ -18,8 +18,18 @@ $(function () {
 
         $('#details').empty()
         $('#search-result-header').empty()
+
+        
         let queryText = $('#query').val()
-        let query = queryText.toLowerCase()
+        let queryTextHome = $('#query-home').val()
+
+        if (queryText) {
+            query = queryText.toLowerCase()
+        }else if(queryTextHome){
+            query = queryTextHome.toLowerCase()
+            queryText = queryTextHome
+
+        }
 
         //console.log(parks)
         
@@ -422,6 +432,15 @@ $(function () {
     $('#btn-search').click(function(){
         getData(parksAPI, displaySearchResults)
     })
+
+    $('#btn-search-home').click(function(){
+        $('#home').hide()
+        $('#logo').show()
+        $('#info-tab').show()
+        $('#map-container').show()
+        getData(parksAPI, displaySearchResults)
+
+    })
     $("input[name='show-park']").change(switchLayer)
 
     $('#btn-addlayer').click(addLayer)
@@ -433,6 +452,10 @@ $(function () {
     getWeather();
     $('#btn-forecast').click(get2hrWeather)
 
-    
+    $('#logo').hide()
+    $('#info-tab').hide()
+    $('#map-container').hide()
+
+
 
 })
