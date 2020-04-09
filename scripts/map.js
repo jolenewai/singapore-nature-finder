@@ -32,48 +32,48 @@ let tree2Icon = L.icon({
 
 let cloudy = L.icon({
     iconUrl: '/images/icons/cloudy.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })
 
 let cloudyDay = L.icon({
     iconUrl: '/images/icons/cloudy_day.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })
 
 let cloudyNight = L.icon({
     iconUrl: '/images/icons/cloudy_night.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })
 
 let lightRain = L.icon({
     iconUrl: '/images/icons/rainy.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })
 
 let showers = L.icon({
     iconUrl: '/images/icons/showers.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })
 
 let thunder = L.icon({
     iconUrl: '/images/icons/thunder_storm.png',
-    iconSize: [50, 40],
-    iconAnchor: [25, 40],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     popupAnchor: [-3, -30],
    
 })

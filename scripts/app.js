@@ -28,10 +28,7 @@ $(function () {
         }else if(queryTextHome){
             query = queryTextHome.toLowerCase()
             queryText = queryTextHome
-
         }
-
-        //console.log(parks)
         
         viewParks(parks, query)
         searchParks(parks, query, queryText)
@@ -79,7 +76,6 @@ $(function () {
 
     function searchParks(parks, query, queryText){
 
-        // console.log(parks)   
         axios.get(parkDataAPI).then(function(parkData){
             csv().fromString(parkData.data).then(function (pData) {
                 parkData = pData
@@ -93,7 +89,7 @@ $(function () {
                     pName = $(desc).children().children().children().children().eq(14).text()
 
                     // only show results with Park in the decription
-                    if (desc.toLowerCase().indexOf(query) >= 0 || desc.toLowerCase().indexOf(query) >= 0) {
+                    if (desc.toLowerCase().indexOf(query) >= 0) {
 
                         if (query != "" ){
                             noOfResults = noOfResults + 1;
@@ -155,7 +151,7 @@ $(function () {
                     pName = $(desc).children().children().children().children().eq(14).text()
 
                     // only show results with Park in the decription
-                    if (desc.toLowerCase().indexOf(query) >= 0 || desc.toLowerCase().indexOf(query) >= 0) {
+                    if (desc.toLowerCase().indexOf(query) >= 0) {
                         let marker = L.marker([n.geometry.coordinates[1], n.geometry.coordinates[0]], { icon: treeIcon }).bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName)
                         parksLayer.addLayer(marker); 
 
@@ -364,27 +360,31 @@ $(function () {
                 switch (forecast){
 
                     case "Partly Cloudy (Day)":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Cloudy":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Partly Cloudy (Night)":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Light Showers":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Light Rain":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
+                    case "Moderate Rain":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
                     break;
                     
                     case "Showers":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
                     break;
                     
                     case "Thundery Showers":
@@ -404,24 +404,57 @@ $(function () {
     }
 
     function displayWeather(weatherData){
+        console.log(weatherData)
         let forecast = weatherData.items[0].general.forecast
             let lowTemp = weatherData.items[0].general.temperature.low
             let highTemp = weatherData.items[0].general.temperature.high
 
             let aveTemp = Math.floor((lowTemp + highTemp) / 2)
 
-            let weatherText = `
-                    <h3 class="bluetext mb-0 mt-2">24 Hours Forecast</h3>
-                    
-                    <p class="weatherText mt-0 pt-0 pb-0 mb-0">${forecast} </span></p>
-                    <p class="pb-0 mb-0">Average Temperature<br/>
+            switch (forecast){
 
-                    <div class="tempNumber my-0 py-0">
-                    ${aveTemp}<span class="tempDegree"><sup>°C</sup></span>
-                    </div>
-                    <p class="highlow">
-                        <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
-                    </p>
+                case "Partly Cloudy (Day)":
+                    iconURL = "images/icons/cloudy_day.png"
+                break;
+
+                case "Cloudy":
+                    iconURL = "images/icons/cloudy.png"
+                break;
+
+                case "Partly Cloudy (Night)":
+                    iconURL = "images/icons/cloudy_night.png"
+                break;
+
+                case "Light Showers":
+                    iconURL = "images/icons/rainy.png"
+                break;
+
+                case "Light Rain":
+                    iconURL = "images/icons/rainy.png"
+                break;
+
+                case "Moderate Rain":
+                    iconURL = "images/icons/rainy.png"
+                break;
+                
+                case "Showers":
+                    iconURL = "images/icons/showers.png"
+                break;
+                
+                case "Thundery Showers":
+                    iconURL = "images/icons/thunder_storm.png"
+                break;
+            } 
+
+            let weatherText = `
+                    <h3 class="bluetext mb-0 mt-3">24 Hours Forecast</h3>
+                    
+                        <p class="weatherText mt-0 pt-0 pb-0 mb-0">${forecast} </span></p>
+                        <img src="${iconURL}" class="ml-2 pt-2"> 
+
+                        <p class="highlow mt-3">
+                            <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
+                        </p>
             `
 
             $('#forecast24hr').empty()
