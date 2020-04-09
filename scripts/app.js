@@ -11,25 +11,11 @@ $(function () {
         })
 
     }
-
+    
     function displaySearchResults(parks){
         
         clearAllLayers()
-
-        $('#details').empty()
-        $('#search-result-header').empty()
-
-        
-        let queryText = $('#query').val()
-        let queryTextHome = $('#query-home').val()
-
-        if (queryText) {
-            query = queryText.toLowerCase()
-        }else if(queryTextHome){
-            query = queryTextHome.toLowerCase()
-            queryText = queryTextHome
-        }
-        
+        resetSearch()
         viewParks(parks, query)
         searchParks(parks, query, queryText)
 
@@ -74,6 +60,12 @@ $(function () {
         clearOptionalLayers() 
     }
 
+    function resetSearch(){
+        $('#details').empty()
+        $('#search-result-header').empty()
+
+    }
+
     function searchParks(parks, query, queryText){
 
         axios.get(parkDataAPI).then(function(parkData){
@@ -81,6 +73,7 @@ $(function () {
                 parkData = pData
 
                 let noOfResults = 0
+                popUpLatLng = []
 
                 for (let n of parks.features) {
                     let desc = n.properties.Description
@@ -90,6 +83,16 @@ $(function () {
 
                     // only show results with Park in the decription
                     if (desc.toLowerCase().indexOf(query) >= 0) {
+                        
+                        
+                        let popup = L.popup({
+                            offset: [0, -30]
+                        })
+                            .setLatLng([n.geometry.coordinates[1], n.geometry.coordinates[0]])
+                            .setContent(pName)
+                            
+                           
+                        popUpLatLng.push(popup)
 
                         if (query != "" ){
                             noOfResults = noOfResults + 1;
@@ -122,20 +125,37 @@ $(function () {
                             }
 
                             let searchResult = `
-                                    <a href="#${noOfResults}"></a>
-                                    <h6 class="bluetext"><i class="fas fa-seedling pr-2"></i> ${pName}</h6>
+                                    
+                                    <h6 class="bluetext"><i class="fas fa-seedling pr-2"></i> <a id="#${noOfResults}" class="result_title" href="#">${pName}</a></h6>
                                     ${parkDetails}
                                     <hr />
                                 `    
                             $('#details').append(searchResult)
+
                         }
                     }
                 }
 
                 let searchResultStr = `
                         <p class="p-3"> ${noOfResults} Search Results for <strong>${queryText}</strong></p>
+                        
                     `
                 $('#search-result-header').append(searchResultStr)
+                //     $('a.result_title').click(function(){
+                        //         let popup = L.popup()
+                        //         .setLatLng([n.geometry.coordinates[1], n.geometry.coordinates[0]])
+                        //         .setContent(pName)
+                        //         .openOn(map); 
+                        //         console.log('clicked')
+                            
+                        // })
+                $.each($('a.result_title'), function(index, value) {
+                    console.log(index);
+                    console.log(popUpLatLng[index])
+                    $(this).click(function(){
+                        map.openPopup(popUpLatLng[index]).flyTo(popUpLatLng[index].getLatLng(),16)
+                    })
+                });
             })
         })
 
@@ -156,12 +176,15 @@ $(function () {
                         parksLayer.addLayer(marker); 
 
                         $(marker).click(function(){
-                            map.flyTo([n.geometry.coordinates[1], n.geometry.coordinates[0]])
+                            map.flyTo([n.geometry.coordinates[1], n.geometry.coordinates[0]],16)
+
                         })
+
                     }
                 }
                 
                 parksLayer.addTo(map)
+                map.setView(sgLl,12)
     }
     
 
@@ -169,10 +192,7 @@ $(function () {
         clearBaseLayer()
         
         nParksLayer = new L.geoJson(nparks, {
-            filter: (feature, layer) => {
-                desc = feature.properties.Description.toLowerCase()
-                return desc.indexOf(query) >= 0
-            },
+            
              onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
@@ -193,10 +213,7 @@ $(function () {
 
         //marking cycling path
         cyclingPathLayer = new L.geoJson(cyclingPath, {
-            filter: (feature, layer) => {
-                desc = feature.properties.Description.toLowerCase()
-                return desc.indexOf(query) >= 0
-            },
+            
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(2).text()
@@ -215,10 +232,7 @@ $(function () {
 
         //mark nParksTracks
         nParksTracksLayer = new L.geoJson(nParksTracks, {
-            filter: (feature, layer) => {
-                desc = feature.properties.Description.toLowerCase()
-                return desc.indexOf(query) >= 0
-            },
+            
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 //console.log($(desc).children().children().children().children())
@@ -245,10 +259,13 @@ $(function () {
             
             let desc = t.properties.Description
             pName = $(desc).children().children().children().children().eq(10).text()
-
             let marker = L.marker([t.geometry.coordinates[1], t.geometry.coordinates[0]], { icon: tree2Icon }).bindPopup(pName)
             treesLayer.addLayer(marker);
 
+            $(marker).click(function(){
+                map.flyTo([n.geometry.coordinates[1], n.geometry.coordinates[0]],16)
+
+            })
         }
 
         treesLayer.addTo(map)
@@ -258,10 +275,7 @@ $(function () {
 
         //mark park connector
         pcnLayer = new L.geoJson(pcn, {
-            filter: (feature, layer) => {
-                desc = feature.properties.Description.toLowerCase()
-                return desc.indexOf(query) >= 0
-            },
+            
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = 'Point A: ' + $(desc).children().children().children().children().eq(2).text()
@@ -297,7 +311,7 @@ $(function () {
     function addLayer(){
 
         clearOptionalLayers()
-
+        query = "" 
         if ($('input[name="show-layers"]:checked')) {
 
             let checkboxes = $('input[name="show-layers"]:checked')
@@ -317,7 +331,6 @@ $(function () {
 
         }
 
-
     }
 
     function getWeather() {
@@ -330,7 +343,6 @@ $(function () {
 
         axios.get(weather24hrAPI, { params }).then(function (response) {
             displayWeather(response.data)
-            
         })
 
     }
@@ -351,6 +363,7 @@ $(function () {
             let weather2hr = response.data
             weather2hrLayer = new L.layerGroup()
             console.log(weather2hr)
+
             for (let i=0; i< weather2hr.area_metadata.length; i++){
 
                 area = weather2hr.area_metadata[i]
@@ -358,6 +371,10 @@ $(function () {
                 let forecast = weather2hr.items[0].forecasts[i].forecast
                                 
                 switch (forecast){
+
+                    case "Fair & Warm":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: sunny} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
 
                     case "Partly Cloudy (Day)":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
@@ -392,14 +409,16 @@ $(function () {
                     break;
                 } 
 
+                $(marker).click(function(){
+                    map.flyTo([n.geometry.coordinates[1], n.geometry.coordinates[0]],16)
+                    // console.log($(this))
+
+                })
                 
                 weather2hrLayer.addLayer(marker)
-
             }    
-
             weather2hrLayer.addTo(map)
-            map.setView(sgLl, 12)
-            
+            map.setView(sgLl, 12)            
         })
     }
 
@@ -412,6 +431,10 @@ $(function () {
             let aveTemp = Math.floor((lowTemp + highTemp) / 2)
 
             switch (forecast){
+
+                case "Fair & Warm":
+                    iconURL = "images/icons/sunny.png"
+                break;
 
                 case "Partly Cloudy (Day)":
                     iconURL = "images/icons/cloudy_day.png"
@@ -453,7 +476,7 @@ $(function () {
                         <img src="${iconURL}" class="ml-2 pt-2"> 
 
                         <p class="highlow mt-3">
-                            <small><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
+                            <small class="lightgreen-text"><sup><i class="fas fa-temperature-low"></i></sup> </small>${lowTemp} / <small class="text-danger"><sup><i class="fas fa-temperature-high"></i></sup></small> ${highTemp}
                         </p>
             `
 
@@ -463,7 +486,11 @@ $(function () {
 
     //assign function to buttons
     $('#btn-search').click(function(){
+
+        queryText = $('#query').val()
+        query = queryText.toLowerCase()
         getData(parksAPI, displaySearchResults)
+        
     })
 
     $('#btn-search-home').click(function(){
@@ -471,8 +498,10 @@ $(function () {
         $('#logo').show()
         $('#info-tab').show()
         $('#map-container').show()
+        queryTextHome = $('#query-home').val()
+        query = queryTextHome.toLowerCase()
+        queryText = queryTextHome
         getData(parksAPI, displaySearchResults)
-
     })
     $("input[name='show-park']").change(switchLayer)
 
@@ -489,6 +518,10 @@ $(function () {
     $('#info-tab').hide()
     $('#map-container').hide()
 
+    $('#btn-reset').click(function(){
+        resetSearch()
+        clearAllLayers()
+    })
 
 
 })

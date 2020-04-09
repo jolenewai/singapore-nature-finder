@@ -60,6 +60,6 @@ let promises = [
 
 
 let parkObject = {}
-
 let weather2hrLayer
-
+let queryText
+let query

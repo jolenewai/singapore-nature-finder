@@ -22,7 +22,7 @@ body{
         right: 0;
         bottom: 0;
         background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-        z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
+        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
         cursor: pointer; /* Add a pointer on hover */
 }
 
@@ -98,7 +98,10 @@ p {
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat; 
+    background-color:#999; 
+    background-blend-mode: multiply;
     transition: all .2s ease;
+
 }
 
 #home .form-control{
@@ -163,7 +166,7 @@ p {
 }
 
 .highlow {
-    font-size: 1.5em;
+    font-size: 2em;
 
 }
 .btn-primary:visited,
