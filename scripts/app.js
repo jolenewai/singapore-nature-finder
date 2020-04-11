@@ -141,18 +141,9 @@ $(function () {
                         
                     `
                 $('#search-result-header').append(searchResultStr)
-                //     $('a.result_title').click(function(){
-                        //         let popup = L.popup()
-                        //         .setLatLng([n.geometry.coordinates[1], n.geometry.coordinates[0]])
-                        //         .setContent(pName)
-                        //         .openOn(map); 
-                        //         console.log('clicked')
-                            
-                        // })
+                
                 $.each($('a.result_title'), function(index, value) {
-                    console.log(index);
-                    console.log(popUpLatLng[index])
-                    $(this).click(function(){
+                        $(this).click(function(){
                         map.openPopup(popUpLatLng[index]).flyTo(popUpLatLng[index].getLatLng(),16)
                     })
                 });
@@ -192,7 +183,10 @@ $(function () {
         clearBaseLayer()
         
         nParksLayer = new L.geoJson(nparks, {
-            
+            filter: (feature, layer) => {
+                desc = feature.properties.Description.toLowerCase()
+                return desc.indexOf(query) >= 0
+            },
              onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
@@ -508,7 +502,7 @@ $(function () {
     $('#btn-addlayer').click(addLayer)
     $('#tab-toggle').click(function(){
         $('#myTabContent').slideToggle()
-
+        $('#tab-toggle i').toggleClass('fa-rotate-180')
     })
 
     getWeather();
@@ -523,5 +517,6 @@ $(function () {
         clearAllLayers()
     })
 
+    $('#query-home').focus()
 
 })

@@ -44,14 +44,18 @@ body{
     z-index: 1030;
     position: fixed;
     width: 350px;
-    top: 110px;
-    left:0px;
+    /* top: 110px; */
+    left:10px;
+    bottom:0px;
 }
 
 #myTabContent {
     overflow-y: scroll;
     height: 500px;
+    bottom:0px;
 }
+
+
 
 #search-result-header{
     width:100%;
@@ -62,6 +66,7 @@ body{
     position: fixed; 
     top:0;
     width:100px;
+    align-self: flex-end;
 }
 
 #search-bar{

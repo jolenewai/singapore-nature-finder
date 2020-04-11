@@ -30,7 +30,7 @@
 					<div class="input-group mb-2 mx-auto text-shadow">
 						<input type="text" class="form-control rounded-left border-white" id="query-home" placeholder="Start searching e.g. Park">
 						<div class="input-group-append">
-							<button class="input-group-text lightbrown lighten-3 rounded-right border-white" id="btn-search-home"><i class="fas fa-search text-white" aria-hidden="true"></i></button>
+							<button class="input-group-text lightbrown lighten-3 rounded-right border-white" id="btn-search-home" role="link"><i class="fas fa-search text-white" aria-hidden="true"></i></button>
 						</div>
 					</div>
 				</div>
@@ -47,8 +47,8 @@
 	</div>
 
 	<div class="row justify-content-left mr-0 mb-0 p-0 ">
-		<div id="info-tab" class="pr-0">
-			<ul class="nav nav-tabs " id="myTab" role="tablist">
+		<div id="info-tab" class="pr-0 rounded">
+			<ul class="nav nav-tabs shadow" id="myTab" role="tablist">
 				<li class="nav-item">
 					<a class="nav-link py-3 px-2 active" id="search-results" data-toggle="tab" href="#search"
 						role="tab" aria-controls="search" aria-selected="true">Search <i
@@ -66,10 +66,10 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link py-3 pl-4 pr-2" id="tab-toggle" data-toggle="tab" href="#" role="tab"
-						aria-controls="tab-toggle" aria-selected="false"><i class="fas fa-window-minimize text-black-50"></i></a>
+						aria-controls="tab-toggle" aria-selected="false"><i class="fas fa-caret-down"></i></a>
 				</li>
 			</ul>
-			<div class="tab-content" id="myTabContent">
+			<div class="tab-content shadow" id="myTabContent">
 				<div class="tab-pane fade show active" id="search" role="tabpanel" aria-labelledby="search-tab">
 					<div class="row lightgreen-bg mx-0" id="search-bar-wrapper">
 						<div class="col bg-light px-0">
