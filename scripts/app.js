@@ -13,7 +13,7 @@ $(function () {
     }
     
     function displaySearchResults(parks){
-        
+        console.log("display")
         clearAllLayers()
         resetSearch()
         viewParks(parks, query)
@@ -480,12 +480,26 @@ $(function () {
 
     //assign function to buttons
     $('#btn-search').click(function(){
-
         queryText = $('#query').val()
         query = queryText.toLowerCase()
         getData(parksAPI, displaySearchResults)
-        
     })
+
+
+    $('#query').keyup(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#btn-search').click()
+        }
+      })
+
+
+      $('#query-home').keyup(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#btn-search-home').click()
+        }
+      })
 
     $('#btn-search-home').click(function(){
         $('#home').hide()
@@ -497,6 +511,7 @@ $(function () {
         queryText = queryTextHome
         getData(parksAPI, displaySearchResults)
     })
+
     $("input[name='show-park']").change(switchLayer)
 
     $('#btn-addlayer').click(addLayer)
