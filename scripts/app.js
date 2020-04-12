@@ -89,7 +89,7 @@ $(function () {
                             offset: [0, -30]
                         })
                             .setLatLng([n.geometry.coordinates[1], n.geometry.coordinates[0]])
-                            .setContent(pName)
+                            .setContent('<i class="fas fa-seedling pr-2"></i> '+pName)
                             
                            
                         popUpLatLng.push(popup)
@@ -180,6 +180,8 @@ $(function () {
     
 
     function viewParksArea(nparks) {
+        console.log(nparks)
+
         clearBaseLayer()
         
         nParksLayer = new L.geoJson(nparks, {
@@ -190,7 +192,7 @@ $(function () {
              onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
                 pName = $(desc).children().children().children().children().eq(4).text()
-                layer.bindPopup(pName);
+                layer.bindPopup('<i class="fas fa-seedling pr-2"></i> ' + pName);
             }
 
         }).addTo(map);
@@ -223,7 +225,6 @@ $(function () {
     }
 
     function viewNParksTracks(nParksTracks) {
-
         //mark nParksTracks
         nParksTracksLayer = new L.geoJson(nParksTracks, {
             
@@ -399,17 +400,20 @@ $(function () {
                     break;
                     
                     case "Thundery Showers":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder, opacity:0.7} ).bindPopup(area.name + '<br>' + forecast )
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
                     break;
                 } 
 
+                weather2hrLayer.addLayer(marker)
+                console.log([area.label_location.latitude, area.label_location.longitude])
                 $(marker).click(function(){
-                    map.flyTo([n.geometry.coordinates[1], n.geometry.coordinates[0]],16)
+                    map.flyTo(this.getLatLng(),14)
+                    //console.log([area.label_location.latitude, area.label_location.longitude])
+
                     // console.log($(this))
 
                 })
                 
-                weather2hrLayer.addLayer(marker)
             }    
             weather2hrLayer.addTo(map)
             map.setView(sgLl, 12)            
@@ -479,20 +483,9 @@ $(function () {
     }
 
     //assign function to buttons
-    $('#btn-search').click(function(){
-        queryText = $('#query').val()
-        query = queryText.toLowerCase()
-        getData(parksAPI, displaySearchResults)
-    })
-
-
-    $('#query').keyup(function(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            $('#btn-search').click()
-        }
-      })
-
+    
+    getWeather();
+    $('#query-home').focus()
 
       $('#query-home').keyup(function(event) {
         if (event.keyCode === 13) {
@@ -512,26 +505,39 @@ $(function () {
         getData(parksAPI, displaySearchResults)
     })
 
+    $('#btn-search').click(function(){
+        queryText = $('#query').val()
+        query = queryText.toLowerCase()
+        getData(parksAPI, displaySearchResults)
+    })
+
+
+    $('#query').keyup(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#btn-search').click()
+        }
+      })
+
     $("input[name='show-park']").change(switchLayer)
 
     $('#btn-addlayer').click(addLayer)
+
     $('#tab-toggle').click(function(){
         $('#myTabContent').slideToggle()
         $('#tab-toggle i').toggleClass('fa-rotate-180')
     })
 
-    getWeather();
     $('#btn-forecast').click(get2hrWeather)
 
     $('#logo').hide()
     $('#info-tab').hide()
     $('#map-container').hide()
 
-    $('#btn-reset').click(function(){
-        resetSearch()
-        clearAllLayers()
-    })
+    // $('#btn-reset').click(function(){
+    //     resetSearch()
+    //     clearAllLayers()
+    // })
 
-    $('#query-home').focus()
 
 })

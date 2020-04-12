@@ -36,7 +36,7 @@ let sunny = L.icon({
     iconUrl: '/images/icons/sunny.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -44,7 +44,7 @@ let cloudy = L.icon({
     iconUrl: '/images/icons/cloudy.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -52,7 +52,7 @@ let cloudyDay = L.icon({
     iconUrl: '/images/icons/cloudy_day.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -60,7 +60,7 @@ let cloudyNight = L.icon({
     iconUrl: '/images/icons/cloudy_night.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -68,7 +68,7 @@ let lightRain = L.icon({
     iconUrl: '/images/icons/rainy.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -76,7 +76,7 @@ let showers = L.icon({
     iconUrl: '/images/icons/showers.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
@@ -84,7 +84,7 @@ let thunder = L.icon({
     iconUrl: '/images/icons/thunder_storm.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
-    popupAnchor: [-3, -30],
+    popupAnchor: [-3, -40],
    
 })
 
