@@ -13,7 +13,6 @@ $(function () {
     }
     
     function displaySearchResults(parks){
-        console.log("display")
         clearAllLayers()
         resetSearch()
         viewParks(parks, query)
@@ -109,7 +108,7 @@ $(function () {
                                     
                                     parkDetails = `
                                         <div class="card border-0">
-                                            <img src="/images/park_images/${parkID}.jpg" class="card-img-top pb-2" alt="${pName}" width="390" height="225">
+                                            <img src="images/park_images/${parkID}.jpg" class="card-img-top pb-2" alt="${pName}" width="390" height="225">
                                             <h6>Location:</h6>
                                             <p>${location}</p>
 
@@ -408,10 +407,6 @@ $(function () {
                 console.log([area.label_location.latitude, area.label_location.longitude])
                 $(marker).click(function(){
                     map.flyTo(this.getLatLng(),14)
-                    //console.log([area.label_location.latitude, area.label_location.longitude])
-
-                    // console.log($(this))
-
                 })
                 
             }    
