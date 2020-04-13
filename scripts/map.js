@@ -13,27 +13,27 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
 
 let treeIcon = L.icon({
-    iconUrl: '/images/tree_icon.png',
+    iconUrl: 'images/tree_icon.png',
     iconSize: [16, 30],
     iconAnchor: [8, 30],
     popupAnchor: [-3, -30],
-    shadowUrl: '/images/tree_icon_shadow.png',
+    shadowUrl: 'images/tree_icon_shadow.png',
     shadowSize: [33, 17],
     shadowAnchor: [9, 14]
 })
 
 let tree2Icon = L.icon({
-    iconUrl: '/images/tree2_icon.png',
+    iconUrl: 'images/tree2_icon.png',
     iconSize: [16, 30],
     iconAnchor: [8, 30],
     popupAnchor: [-3, -30],
-    shadowUrl: '/images/tree_icon_shadow.png',
+    shadowUrl: 'images/tree_icon_shadow.png',
     shadowSize: [33, 17],
     shadowAnchor: [9, 14]
 })
 
 let sunny = L.icon({
-    iconUrl: '/images/icons/sunny.png',
+    iconUrl: 'images/icons/sunny.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -41,7 +41,7 @@ let sunny = L.icon({
 })
 
 let cloudy = L.icon({
-    iconUrl: '/images/icons/cloudy.png',
+    iconUrl: 'images/icons/cloudy.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -49,7 +49,7 @@ let cloudy = L.icon({
 })
 
 let cloudyDay = L.icon({
-    iconUrl: '/images/icons/cloudy_day.png',
+    iconUrl: 'images/icons/cloudy_day.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -57,7 +57,7 @@ let cloudyDay = L.icon({
 })
 
 let cloudyNight = L.icon({
-    iconUrl: '/images/icons/cloudy_night.png',
+    iconUrl: 'images/icons/cloudy_night.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -65,7 +65,7 @@ let cloudyNight = L.icon({
 })
 
 let lightRain = L.icon({
-    iconUrl: '/images/icons/rainy.png',
+    iconUrl: 'images/icons/rainy.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -73,7 +73,7 @@ let lightRain = L.icon({
 })
 
 let showers = L.icon({
-    iconUrl: '/images/icons/showers.png',
+    iconUrl: 'images/icons/showers.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],
@@ -81,7 +81,7 @@ let showers = L.icon({
 })
 
 let thunder = L.icon({
-    iconUrl: '/images/icons/thunder_storm.png',
+    iconUrl: 'images/icons/thunder_storm.png',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
     popupAnchor: [-3, -40],

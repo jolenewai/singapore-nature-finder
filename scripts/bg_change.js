@@ -2,7 +2,7 @@ $(function(){
 
     let bgImages = ["bg_image1.jpg", "bg_image2.jpg","bg_image3.jpg", "bg_image4.jpg", "bg_image5.jpg", "bg_image6.jpg","bg_image7.jpg", "bg_image8.jpg"]
     let img = new Image()
-    let imgPath = '/images/'
+    let imgPath = 'images/'
 
     function preload(){
 
