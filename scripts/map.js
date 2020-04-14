@@ -56,6 +56,14 @@ let cloudyDay = L.icon({
    
 })
 
+let moon = L.icon({
+    iconUrl: 'images/icons/moon.png',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [-3, -40],
+   
+})
+
 let cloudyNight = L.icon({
     iconUrl: 'images/icons/cloudy_night.png',
     iconSize: [40, 40],

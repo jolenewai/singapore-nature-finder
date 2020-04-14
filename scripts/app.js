@@ -387,6 +387,10 @@ $(function () {
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyNight} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
+                    case "Fair (Night)":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: moon} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
                     case "Light Showers":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
                     break;
