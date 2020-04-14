@@ -1,35 +1,115 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
 
-Welcome jolenewai,
-
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+<img src="images/home-screen.png" style="margin: 0;">
 
 ## Singapore Nature Finder
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+As a nature lover, living in a fast pace city like Singapore can be exhausted at times. Hiking or walking in the nature has become a necessity to make myself healthier mentally and physically. This had therefore became the concept behind this nature finder app, where user can find a nature place in Singapore, at the same time checking out the weather for them to plan for the trip out.
 
-`python3 -m http.server`
+The demo of the live website can be accessed here:
 
-A blue button should appear to click: *Make Public*,
+https://jolenewai.github.io/singapore-nature-finder/ 
 
-Another blue button should appear to click: *Open Browser*.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+# UX/UI 
 
-A blue button should appear to click: *Make Public*,
+The aim of the UX/UI is to create a lightweight app to search for a nature places and able to plan for their hiking/excursion
 
-Another blue button should appear to click: *Open Browser*.
+## Information Structure / Flow
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
+This is a one page app website. The page is divided into 2 sections, the landing page and the map.
 
-## Updates Since The Instructional Video
+On the landing page, the app will first address to the users with greetings and a search bar to encourage user to type something to search. The map section will be triggered when the user press down the "Enter" key or click on the search button.
 
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
+On the map section, information/functions are organised into 3 tabs:
+* Search 
+* Explore 
+* Weather 
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+<img src="images/map-screen.png" style="margin: 0;">
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+### Search
+* Search results of parks will be displayed here
+* Details of the parks including images will be displayed whenever available
+* User can interact with the map through clicking on the result link, the map will zoom in to show the targeted marker
+
+### Explore
+* allow user to interact with the map to explore more on the nature places/paths 
+* user can switch between position marker or park area on the map
+* user can add or remove optional layers of Heritage Trees, Cycling Path, Park Connectors and National Park Tracks
+* user can remove all the layers and reset the map by clicking on the "Reset" button
+
+### Weather
+* 24-hour weather forecast will be displayed here
+* 2-hr weather forecast can be triggered through clicking the button and will be displayed on the map
+
+### Map
+* all icons used on the map are customised and legends are included on the explore tab 
+* by clicking the markers, areas, lines on the map, user will be able to see relevant information to the feature
+
+## Target Audience
+* Nature lovers like me in Singapore
+* People who likes to do sports/exercises in nature in Singapore
+* People who is planning for hiking/activities at nature places in Singapore
+
+## Responsiveness
+
+This website is responsive to mobile and other smaller devices
+
+## Colours
+
+Vibrant colours associated with nature are selected in this design.
+
+<img src="images/colour_scheme.gif" width="200" style="margin: 0;">
+
+This set of colours are inspired by the colours found in the forest and nature reserves.
+
+## Layout
+
+__Typography__
+
+* Sans serif font is selected for a clean and cutting edge look and feel
+
+__Collapsible Tab__
+
+* Collapsible tab is used to make sure the map can be viewed unobstructed across devices of all sizes
+
+## Technology
+
+* Bootstrap version 4.4
+* HTML 
+* CSS
+* Javascript 
+* JQuery
+* Leafletjs
+* axios
+* Adobe XD
+
+### Callback functions
+* Data are loaded on request basis, therefore callback functions are used in this app most of the time
+
+```javacript
+
+function getData(apiURL, callback){
+        getApi(apiURL, callback)
+    }
+
+function getApi(apiURL, callback){
+
+    axios.get(apiURL).then(function(response){
+        callback(response.data) 
+    })
+
+}
+
+```
+
+
+## Plugins
+
+## Reference / Credits
+* Park and path Geojson, Weather Api [data.gov.sg](https://data.gov.sg/)
+* Photos from [flyin.fish.82](https://www.instagram.com/flyin.fish.82/)
+* [Google Material.io Resizer](https://material.io/resources/resizer/)
+
 
 --------
-
-Happy coding!
