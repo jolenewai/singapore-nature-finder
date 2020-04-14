@@ -65,6 +65,11 @@ $(function () {
 
     }
 
+    function resetMapView(){
+        map.setView(sgLl,12)
+
+    }
+
     function searchParks(parks, query, queryText){
 
         axios.get(parkDataAPI).then(function(parkData){
@@ -218,8 +223,8 @@ $(function () {
 
         cyclingPathLayer.setStyle({
             color: '#563B28',
-            weight: 2,
-            Opacity: 0.3
+            weight: 5,
+            Opacity: 0.2
         })
     }
 
@@ -237,7 +242,7 @@ $(function () {
 
         nParksTracksLayer.setStyle({
             color: '#196C00',
-            weight: 2,
+            weight: 3,
             Opacity: 0.5
         })
 
@@ -280,7 +285,7 @@ $(function () {
 
         pcnLayer.setStyle({
             color: '#D49683',
-            weight: 2,
+            weight: 5,
             Opacity: 0.5
         })
 
@@ -401,6 +406,10 @@ $(function () {
                     case "Thundery Showers":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
                     break;
+
+                    case "Heavy Thundery Showers":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
                 } 
 
                 weather2hrLayer.addLayer(marker)
@@ -411,7 +420,7 @@ $(function () {
                 
             }    
             weather2hrLayer.addTo(map)
-            map.setView(sgLl, 12)            
+            resetMapView()            
         })
     }
 
@@ -515,9 +524,9 @@ $(function () {
       })
 
     $("input[name='show-park']").change(switchLayer)
-
-    $('#btn-addlayer').click(addLayer)
-
+    $("input[name='show-park']").click(switchLayer)
+    $("input[name='show-layers']").click(addLayer)
+  
     $('#tab-toggle').click(function(){
         $('#myTabContent').slideToggle()
         $('#tab-toggle i').toggleClass('fa-rotate-180')
@@ -529,10 +538,14 @@ $(function () {
     $('#info-tab').hide()
     $('#map-container').hide()
 
-    // $('#btn-reset').click(function(){
-    //     resetSearch()
-    //     clearAllLayers()
-    // })
+    $('#btn-reset').click(function(){
+        resetSearch()
+        clearAllLayers()
+        resetMapView()
+        $("input[name='show-park']").prop('checked', false)
+        $("input[name='show-layers']").prop('checked', false)
+        query = ''
+    })
 
 
 })
