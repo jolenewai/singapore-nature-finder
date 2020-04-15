@@ -184,7 +184,6 @@ $(function () {
     
 
     function viewParksArea(nparks) {
-        console.log(nparks)
 
         clearBaseLayer()
         
@@ -234,7 +233,6 @@ $(function () {
             
             onEachFeature: (feature, layer) => {
                 desc = feature.properties.Description
-                //console.log($(desc).children().children().children().children())
                 pName = $(desc).children().children().children().children().eq(2).text()
                 layer.bindPopup(pName);
             }
@@ -361,7 +359,6 @@ $(function () {
 
             let weather2hr = response.data
             weather2hrLayer = new L.layerGroup()
-            console.log(weather2hr)
 
             for (let i=0; i< weather2hr.area_metadata.length; i++){
 
@@ -414,7 +411,6 @@ $(function () {
                 } 
 
                 weather2hrLayer.addLayer(marker)
-                console.log([area.label_location.latitude, area.label_location.longitude])
                 $(marker).click(function(){
                     map.flyTo(this.getLatLng(),14)
                 })
@@ -426,7 +422,6 @@ $(function () {
     }
 
     function displayWeather(weatherData){
-        console.log(weatherData)
         let forecast = weatherData.items[0].general.forecast
             let lowTemp = weatherData.items[0].general.temperature.low
             let highTemp = weatherData.items[0].general.temperature.high
