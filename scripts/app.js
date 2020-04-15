@@ -371,16 +371,17 @@ $(function () {
                                 
                 switch (forecast){
 
+                    case "Cloudy":
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy} ).bindPopup(area.name + '<br>' + forecast )
+                    break;
+
                     case "Fair & Warm":
+                    case "Fair (Day)":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: sunny} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Partly Cloudy (Day)":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudyDay} ).bindPopup(area.name + '<br>' + forecast )
-                    break;
-
-                    case "Cloudy":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
                     case "Partly Cloudy (Night)":
@@ -392,28 +393,24 @@ $(function () {
                     break;
 
                     case "Light Showers":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
-                    break;
-
                     case "Light Rain":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
-                    break;
-
                     case "Moderate Rain":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: lightRain} ).bindPopup(area.name + '<br>' + forecast )
                     break;
-                    
+
                     case "Showers":
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: showers} ).bindPopup(area.name + '<br>' + forecast )
                     break;
                     
                     case "Thundery Showers":
+                    case "Heavy Thundery Showers":    
                         marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
                     break;
 
-                    case "Heavy Thundery Showers":
-                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: thunder} ).bindPopup(area.name + '<br>' + forecast )
+                    default:
+                        marker = L.marker([area.label_location.latitude, area.label_location.longitude],{icon: cloudy} ).bindPopup(area.name + '<br>' + forecast )
                     break;
+
                 } 
 
                 weather2hrLayer.addLayer(marker)
@@ -439,6 +436,7 @@ $(function () {
             switch (forecast){
 
                 case "Fair & Warm":
+                case "Fair (Day)":
                     iconURL = "images/icons/sunny.png"
                 break;
 
@@ -455,13 +453,7 @@ $(function () {
                 break;
 
                 case "Light Showers":
-                    iconURL = "images/icons/rainy.png"
-                break;
-
                 case "Light Rain":
-                    iconURL = "images/icons/rainy.png"
-                break;
-
                 case "Moderate Rain":
                     iconURL = "images/icons/rainy.png"
                 break;
@@ -471,8 +463,14 @@ $(function () {
                 break;
                 
                 case "Thundery Showers":
+                case "Heavy Thundery Showers":    
                     iconURL = "images/icons/thunder_storm.png"
                 break;
+
+                default:
+                    iconURL = "images/icons/cloudy.png"
+                break;
+
             } 
 
             let weatherText = `

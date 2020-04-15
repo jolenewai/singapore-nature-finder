@@ -33,18 +33,18 @@ On the map section, information/functions are organised into 3 tabs:
 * User can interact with the map through clicking on the result link, the map will zoom in to show the targeted marker
 
 ### Explore
-* allow user to interact with the map to explore more on the nature places/paths 
-* user can switch between position marker or park area on the map
-* user can add or remove optional layers of Heritage Trees, Cycling Path, Park Connectors and National Park Tracks
-* user can remove all the layers and reset the map by clicking on the "Reset" button
+* Allow user to interact with the map to explore more on the nature places/paths 
+* User can switch between position marker or park area on the map
+* User can add or remove optional layers of Heritage Trees, Cycling Path, Park Connectors and National Park Tracks
+* User can remove all the layers and reset the map by clicking on the "Reset" button
 
 ### Weather
 * 24-hour weather forecast will be displayed here
 * 2-hr weather forecast can be triggered through clicking the button and will be displayed on the map
 
 ### Map
-* all icons used on the map are customised and legends are included on the explore tab 
-* by clicking the markers, areas, lines on the map, user will be able to see relevant information to the feature
+* All icons used on the map are customised and legends are included on the explore tab 
+* By clicking the markers, areas, lines on the map, user will be able to see relevant information to the feature
 
 ## Target Audience
 * Nature lovers like me in Singapore
@@ -75,13 +75,10 @@ __Collapsible Tab__
 
 ## Technology
 
-* Bootstrap version 4.4
 * HTML 
 * CSS
 * Javascript 
 * JQuery
-* Leafletjs
-* axios
 * Adobe XD
 
 ### Callback functions
@@ -105,11 +102,17 @@ function getApi(apiURL, callback){
 
 
 ## Plugins
+* [LeafletJS](https://leafletjs.com/)
+* [axios](https://github.com/axios/axios)
+* [csvtoJson](https://github.com/Keyang/node-csvtojson)
+* [Bootstrap version 4.4](https://getbootstrap.com/)
+
 
 ## Reference / Credits
-* Park and path Geojson, Weather Api [data.gov.sg](https://data.gov.sg/)
+* Most of the data and API are from [data.gov.sg](https://data.gov.sg/)
 * Photos from [flyin.fish.82](https://www.instagram.com/flyin.fish.82/)
-* [Google Material.io Resizer](https://material.io/resources/resizer/)
+* Park Details are extracted from [National Parks Board](https://www.nparks.gov.sg/)
+* Screenshots created using [Google Material.io Resizer](https://material.io/resources/resizer/)
 
 
 --------
