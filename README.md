@@ -14,7 +14,7 @@ https://jolenewai.github.io/singapore-nature-finder/
 
 The aim of the UX/UI is to create a lightweight app to search for a nature places and able to plan for their hiking/excursion
 
-## Information Structure / Flow
+## Features
 
 This is a one page app website. The page is divided into 2 sections, the landing page and the map.
 
@@ -78,8 +78,12 @@ __Collapsible Tab__
 * HTML 
 * CSS
 * Javascript 
-* JQuery
-* Adobe XD
+* [JQuery](https://jquery.com/) to simplify DOM manipulation
+* [Adobe XD](https://www.adobe.com/sea/products/xd.html) for wireframing and UI design 
+* [LeafletJS](https://leafletjs.com/) use for map 
+* [axios](https://github.com/axios/axios) for getting api and promise functions
+* [csvtoJson](https://github.com/Keyang/node-csvtojson) to convert csv file to json format for data manipulation
+* [Bootstrap version 4.4](https://getbootstrap.com/) for toggle of tabs navigation  
 
 ### Callback functions
 * Data are loaded on request basis, therefore callback functions are used in this app most of the time
@@ -99,14 +103,6 @@ function getApi(apiURL, callback){
 }
 
 ```
-
-
-## Plugins
-* [LeafletJS](https://leafletjs.com/)
-* [axios](https://github.com/axios/axios)
-* [csvtoJson](https://github.com/Keyang/node-csvtojson)
-* [Bootstrap version 4.4](https://getbootstrap.com/)
-
 
 ## Reference / Credits
 * Most of the data and API are from [data.gov.sg](https://data.gov.sg/)
