@@ -1,5 +1,5 @@
 
-<img src="images/home-screen.png" style="margin: 0;">
+<img src="images/home-screen.jpg" style="margin: 0;">
 
 ## Singapore Nature Finder
 
@@ -25,7 +25,7 @@ On the map section, information/functions are organised into 3 tabs:
 * Explore 
 * Weather 
 
-<img src="images/map-screen.png" style="margin: 0;">
+<img src="images/map-screen.jpg" style="margin: 0;">
 
 ### Search
 * Search results of parks will be displayed here
