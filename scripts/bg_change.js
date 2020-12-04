@@ -1,8 +1,10 @@
 $(function(){
 
-    let bgImages = ["bg_image1.jpg", "bg_image2.jpg","bg_image3.jpg", "bg_image4.jpg", "bg_image5.jpg", "bg_image6.jpg","bg_image7.jpg", "bg_image8.jpg"]
+    let bgImages = ["bg_image1", "bg_image2","bg_image3", "bg_image4", "bg_image5", "bg_image6","bg_image7", "bg_image8"]
     let img = new Image()
     let imgPath = 'images/'
+    let imgExtension = ".jpg"
+    let imgURL = ""
 
     function preload(){
 
@@ -16,7 +18,14 @@ $(function(){
     }
     function changeImage(){
         let randNum = Math.floor(Math.random() * 8)
-        $('#home').css("background-image", "url(\'"+imgPath+bgImages[randNum]+"\')")   
+        if ($(window).width < 1024) {
+            imgURL = imgPath+bgImages[randNum]+"-m"+imgExtension
+        } else {
+            imgURL = imgPath+bgImages[randNum]+"-m"+imgExtension
+        }
+
+        console.log($(window).width, '>', imgURL)
+        $('#home').css("background-image", "url(\'"+imgURL+"\')")   
     }
 
     preload()
