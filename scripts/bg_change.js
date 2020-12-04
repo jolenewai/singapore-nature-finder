@@ -24,7 +24,6 @@ $(function(){
             imgURL = imgPath+bgImages[randNum]+"-m"+imgExtension
         }
 
-        console.log($(window).width, '>', imgURL)
         $('#home').css("background-image", "url(\'"+imgURL+"\')")   
     }
 
